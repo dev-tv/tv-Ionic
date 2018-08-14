@@ -1,0 +1,59 @@
+<div class="list card homepage landscape-team-wrapper" id="landscape_team_wrapper" ng-if="!portraitMode">
+	<div class="row landscape-team-row">
+		<div class="member-collapse-click">
+			<span ng-click="show = false; collapseExpandAll(combinedTasks, show);" ng-show="show">
+					<i class = "icon icon ion-android-arrow-up"></i>
+				    Collapse All
+			</span>
+			<span ng-click="show = true; collapseExpandAll(combinedTasks, show);" ng-hide="show">
+					<i class = "icon icon ion-android-arrow-down"></i>
+					Expand All
+			</span>
+		</div>
+		<div>New</div>
+		<div>Active</div>
+		<div>Resolved</div>
+		<div>Closed</div>
+	</div>
+	<div class="row landscape-team-row {{mainUser.collapse ? 'collapsedrow' : ''}}" ng-repeat="mainUser in combinedTasks track by $index">
+		<div ng-click="collapseExpandUser(mainUser);" class="member-collapse-click">
+			<i class = "icon member-icon icon ion-arrow-{{mainUser.collapse ? 'right-b' : 'down-b' }}"></i>
+			<span class="card-user-name"><span>
+
+				<img ng-if="mainUser.name != 'Unassigned'" ng-src="{{mainUser.imageUrl}}">
+
+				<img  ng-if="mainUser.name == 'Unassigned'" ng-src="https://cdn.vsassets.io/v/20171217T033541/_content/notassigned-user.svg">
+
+			</span>{{mainUser.name}}</span></div>
+
+		<ul ng-show="mainUser.collapse" class="member-list-total">
+			<li ng-repeat="column in mainUser.columns" ng-if="column.name == 'New' && column.cards.length != 0">
+				{{column.cards.length}} not started
+			</li>
+			<li ng-repeat="column in mainUser.columns" ng-if="column.name == 'Active' && column.cards.length != 0">
+				{{column.cards.length}} in progress
+			</li>
+		</ul>
+
+		<div ng-hide="mainUser.collapse"  class="col-sm-{{12 / kanbanBoard.numberOfColumns}} col-xs-{{12 / kanbanBoard.numberOfColumns}}"
+			 ng-repeat="column in mainUser.columns"
+			 data-columnindex="{{$index}}" id="column{{$index}}">
+			<div class="column">
+				<ul class="cards card-list" as-sortable="kanbanSortOptions" data-ng-model="column.cards" ng-if="column.name != 'Resolved'">
+					<li class="card" ng-repeat="card in column.cards" ng-class="{ 'yellowbg': card.workItemTypeID == 5, 'bluebg': card.workItemTypeID == 7 , 'redbg': card.workItemTypeID == 1,}" as-sortable-item>
+						<div as-sortable-item-handle>
+							<p class="card-content"><strong>{{card.workItemVSOID}}</strong> {{card.name}}</p>
+						</div>
+					</li>
+				</ul>
+				<ul class="cards card-list" as-sortable="kanbanSortOptionsResolved" data-ng-model="column.cards" ng-if="column.name == 'Resolved'">
+					<li class="card" ng-repeat="card in column.cards" as-sortable-item>
+						<div as-sortable-item-handle>
+							<p class="card-content"><strong>{{card.workItemVSOID}}</strong> {{card.name}}</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

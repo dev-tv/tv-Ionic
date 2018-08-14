@@ -1,0 +1,16 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">{{edittitles}} </h1>
+    <div class="buttons">
+      <button class="button button-clear" data-ng-click="closeTextEditorPopUpModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content overflow-scroll="true">
+	<ng-quill-editor style="min-height:200px; display:block" class="selectable eselectable" ng-model="titles" read-only="false" required="true" max-length="30" on-editor-created="editorCreated(editor)" on-content-changed="contentChanged(editor, html, text)" modules="{toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline'],
+	  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['code-block']
+    ]}"></ng-quill-editor>
+ </ion-content>
+</ion-modal-view>

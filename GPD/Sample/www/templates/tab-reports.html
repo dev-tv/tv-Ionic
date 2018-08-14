@@ -1,0 +1,95 @@
+<ion-view view-title="Reports"  hide-nav-bar="false">
+  <ion-nav-buttons side="side">                                                                                                   
+      <button data-ng-click="onRefreshReportChart(reportType)" ng-if="reportType" class="button icon ion-refresh button-positive">
+      </button>
+
+      <button data-ng-click="openEmailReportModal()"  ng-if="hdr && hdr.length > 0" data-ng-show="allVSProjects.length"
+              class="button icon ion-email button-positive icn-right">
+      </button>
+  </ion-nav-buttons>
+  
+
+  <ion-content>
+    
+
+    <form name="form" novalidate data-ng-submit="selectRefreshBackLogTime(selectedTime)"
+          data-ng-show="allVSProjects.length">
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Select Project <small>*</small>
+        </div>
+        <select data-ng-model="reports.selectedProject" data-ng-required="true"
+                  ng-if="freeTrialVersionHasExpired == false || userSubscribed == true"
+                  data-ng-change="selectProject(reports.selectedProject)"
+                  data-ng-options="proj.areaPathNodeName +'-'+ proj.iteration_path for proj in allVSProjects">
+          <option value="" selected="selected">Select</option>
+        </select>
+          <select data-ng-model="reports.selectedProject" data-ng-required="true"
+                  ng-if="freeTrialVersionHasExpired == true && userSubscribed == false"
+                  data-ng-change="selectProject(reports.selectedProject)"
+                  data-ng-options="proj.areaPathNodeName for proj in allVSProjects  | limitTo: 1">
+              <option value="" selected="selected">Select</option>
+          </select>
+      </label>
+
+      <label class="item item-input item-select" data-ng-show="reports.selectedProject" >
+        <div class="input-label">
+          Select Chart <small>*</small>
+        </div>
+
+        <select data-ng-model="reportType" ng-if="freeTrialVersionHasExpired == false || userSubscribed == true"
+                    data-ng-required="true"
+                    data-ng-change="onSelectReportType(reportType)"
+                    data-ng-options="someObject as someObject.label for someObject in reportTypes | filter:myFilter">
+                <option value="" selected ng-show="isHide"><span data-ng-click="onSelectReportType(reportTypes[0])">{{reportTypes[0].label}}</span> </option>
+            </select>
+            <select data-ng-model="reportType" ng-if="freeTrialVersionHasExpired == true && userSubscribed == false"
+                    data-ng-required="true"
+                    data-ng-change="onSelectReportType(reportType)"
+                    data-ng-options="someObject as someObject.label for someObject in reportTypes | filter:myFilter | limitTo: 0">
+                <option value="" selected ng-show="isHide"><span data-ng-click="onSelectReportType(reportTypes[0])">{{reportTypes[0].label}}</span> </option>
+            </select>
+      </label>
+
+    </form>
+    <!--<ion-scroll zooming="true" direction="y">-->
+	<div class="row" align="center" data-ng-if="ops.length > 1">
+		<div class="col"> <div class="square_blue"> </div>  <span> {{isChart}} Completed </span>  </div>
+		<div class="col"> <div class="square_pink"> </div>  <span> {{isChart}} Remaining </span>  </div>
+
+	</div>
+<!--
+  <nvd3 options="obj.opt.options" data="obj" data-ng-repeat="obj in data | orderBy:'-(measures[0]*100/ranges[0])'"></nvd3>
+
+  <nvd3 options="obj.opt.options"  data="obj" data-ng-repeat="obj in dataRangeZero"></nvd3>
+
+  <nvd3 id="full-burndown" options="burnDownObj.options" data-ng-if="burnDownObj.data.length" data="burnDownObj.data"> </nvd3>
+  -->
+   <div google-chart chart="googleburnDownObj" data-ng-if="googleburnDownObj.data.rows.length" style="height:430px; margin-top:-15px;"></div>
+
+   <div google-chart chart="obj" data-ng-if="obj.data.rows.length" style="height:80px; margin-top:5px;" ng-repeat="obj in ops" agc-on-ready="initChartImgs(chartWrapper)" agc-on-select="initChartImg(chartWrapper)"></div>
+
+  <div class="list card" data-ng-show="showLeaderboard" >
+          <ion-list id="copy">
+
+          <ion-item class="item-avatar"
+                  data-ng-repeat="vstsTeamMember in vstsTeamMembers track by $index"
+                  get-percentage=" {{vstsTeamMember.closedWorkItemsCount}}">
+            <img data-ng-src={{vstsTeamMember.imageUrl}}>
+            <h3>{{vstsTeamMember.displayName}}</h3>
+            <span class="badge badge-stable">
+                {{vstsTeamMember.closedWorkItemsCount}}
+            </span>
+          </ion-item>
+
+          </ion-list>
+
+  </div>
+
+	<div class="list list-inset" data-ng-show="!allVSProjects.length">
+      <div class="item item-text-wrap">
+        <strong>No Team Project Found. <br> Please add one in 'Settings' > 'Project' > 'New Project Wizard' to view Reports.</strong>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

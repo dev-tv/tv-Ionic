@@ -1,0 +1,27 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Delete Project</h1>
+    <div class="buttons">
+      <button class="button button-clear" data-ng-click="closeDeleteModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form name="form" novalidate data-ng-submit="showConfirmationForRemoveProject(selectedProjToDel)">
+      <div class="list">
+        
+		<label class="item item-input item-select">
+			<div class="input-label">
+			  Project <small>*</small>
+			</div>
+			<select data-ng-model="selectedProjToDel" data-ng-required="true">
+			  <option value="" selected>Select</option>
+			  <option data-ng-repeat="proj in projectsToDelete" value="{{proj['id']}}" data-ng-show="proj['vsProjectID'] != '001'">{{proj.areaPathNodeName}}-{{proj.iteration_path}}</option>
+			</select>
+		  </label>
+        <label class="item">
+          <button data-ng-disabled="form.$invalid" class="button button-block button-assertive" type="submit">Delete</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

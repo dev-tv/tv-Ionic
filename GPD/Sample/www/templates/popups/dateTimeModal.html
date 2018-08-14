@@ -1,0 +1,214 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <button class="button icon-left button-clear" data-ng-click="closePopup()">
+            Cancel
+        </button>
+        <h1 class="title"></h1>
+        <button class="button button-clear" data-ng-click="saveDateTime()">
+            Done
+        </button>
+    </ion-header-bar>
+    <ion-content class="padding checkboxreapeat">
+		  <div class="row header">
+          <div class="col"> Days </div>
+          <div class="col"> From </div>
+           <div class="col" >To </div>
+          
+		  </div>
+		  
+			<div class="row">
+			    <span class="col"> <ion-checkbox class="colored-icn" style="padding-left: 48px;" ng-model="schedule.day.monday" ng-change="scheduleDaySelected('Monday')">
+							Mo
+						</ion-checkbox>	 
+				</span>
+				<div class="col"> <input ng-model="schedule.day.mondayFrom" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+				<div class="col"><input ng-model="schedule.day.mondayTo" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+			
+				
+			</div>
+			
+			<div class="row">
+			   <span class="col"> <ion-checkbox class="colored-icn" style="padding-left: 48px;" ng-model="schedule.day.tuesday" ng-change="scheduleDaySelected('Tuesday')">
+                    Tu
+                </ion-checkbox> 
+				</span>
+				<div class="col"> <input ng-model="schedule.day.tuesdayFrom" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+				
+				<div class="col"><input ng-model="schedule.day.tuesdayTo" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+			
+			</div>
+			
+			<div class="row">
+			   <span class="col">  <ion-checkbox class="colored-icn" style="padding-left: 48px;" ng-model="schedule.day.wednesday" ng-change="scheduleDaySelected('Wednesday')">
+                    We
+                </ion-checkbox>   
+				</span>
+				<div class="col">  <input ng-model="schedule.day.wednesdayFrom" type="time" style="padding: 2px 0px;margin-top:5px;">
+				</div>
+				
+				<div class="col"><input ng-model="schedule.day.wednesdayTo" type="time" style="padding: 2px 0px;margin-top:5px;">
+				</div>
+			
+			</div>
+			
+			<div class="row">
+			    <span class="col"> <ion-checkbox class="colored-icn" style="padding-left: 48px;" ng-model="schedule.day.thursday" ng-change="scheduleDaySelected('Thursday')">
+							Th
+						</ion-checkbox>	 
+				</span>
+				<div class="col"> <input ng-model="schedule.day.thursdayFrom" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+				<div class="col"><input ng-model="schedule.day.thursdayTo" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+			
+				
+			</div>
+			
+			<div class="row">
+			    <span class="col"> <ion-checkbox class="colored-icn" style="padding-left: 48px;" ng-model="schedule.day.friday" ng-change="scheduleDaySelected('Friday')">
+							Fr
+						</ion-checkbox>	 
+				</span>
+				<div class="col"> <input ng-model="schedule.day.fridayFrom" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+				<div class="col"><input ng-model="schedule.day.fridayTo" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+			
+				
+			</div>
+			
+			<div class="row">
+			    <span class="col"> <ion-checkbox class="colored-icn" style="padding-left: 48px;" ng-model="schedule.day.saturday" ng-change="scheduleDaySelected('Saturday')">
+							Sa
+						</ion-checkbox>	 
+				</span>
+				<div class="col"> <input ng-model="schedule.day.saturdayFrom" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+				<div class="col"><input ng-model="schedule.day.saturdayTo" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+			
+				
+			</div>
+			
+			<div class="row">
+			    <span class="col"> <ion-checkbox class="colored-icn" style="padding-left: 48px;" ng-model="schedule.day.sunday" ng-change="scheduleDaySelected('Sunday')">
+							Su
+						</ion-checkbox>	 
+				</span>
+				<div class="col"> <input ng-model="schedule.day.sundayFrom" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+				<div class="col"><input ng-model="schedule.day.sundayTo" type="time" style="padding: 2px 0px;margin-top: 5px;">
+				</div>
+			
+				
+			</div>
+	<!--
+        <div class="row ">
+            <div class="">
+                <span class="repeatheadings">Days</span>
+               
+                  
+						
+				<span class=" col-32">
+					<span class="">from</span>
+                   
+				</span>
+				<span class="col-32">
+					<span class="">To</span>
+				
+				</span>
+			
+            </div>
+            
+		<!--
+        <div class="row ">
+            <div class="col col-40">
+                <ion-checkbox class="colored-icn" ng-model="schedule.day.tuesday" ng-change="scheduleDaySelected('Tuesday')">
+                    Tues
+                </ion-checkbox>          
+            </div>
+            <span class="col col-30">
+                <input ng-model="schedule.day.tuesdayFrom" type="time" style="padding: 0">
+            </span>
+            <span class="col col-30">
+             <input ng-model="schedule.day.tuesdayTo" type="time" style="padding: 0">
+            </span>
+        </div>
+		
+        <div class="row ">
+            <div class="col col-40">
+                <ion-checkbox class="colored-icn" ng-model="schedule.day.wednesday" ng-change="scheduleDaySelected('Wednesday')">
+                    Wed
+                </ion-checkbox>          
+            </div>
+            <span class="col col-30">
+                <input ng-model="schedule.day.wednesdayFrom" type="time" style="padding: 0">
+            </span>
+            <span class="col col-30">
+             <input ng-model="schedule.day.wednesdayTo" type="time" style="padding: 0">
+            </span>
+        </div>
+
+        <div class="row ">
+            <div class="col col-40">
+                <ion-checkbox class="colored-icn" ng-model="schedule.day.thursday" ng-change="scheduleDaySelected('Thursday')">
+                    Thurs
+                </ion-checkbox>          
+            </div>
+            <span class="col col-30">
+                <input ng-model="schedule.day.thursdayFrom" type="time" style="padding: 0">
+            </span>
+            <span class="col col-30">
+             <input ng-model="schedule.day.thursdayTo" type="time" style="padding: 0">
+            </span>
+        </div>
+
+        <div class="row ">
+            <div class="col col-40">
+                <ion-checkbox class="colored-icn" ng-model="schedule.day.friday" ng-change="scheduleDaySelected('Friday')">
+                    Fri
+                </ion-checkbox>          
+            </div>
+            <span class="col col-30">
+                <input ng-model="schedule.day.fridayFrom" type="time" style="padding: 0">
+            </span>
+            <span class="col col-30">
+             <input ng-model="schedule.day.fridayTo" type="time" style="padding: 0">
+            </span>
+        </div>
+
+         <div class="row ">
+            <div class="col col-40">
+                <ion-checkbox class="colored-icn" ng-model="schedule.day.saturday" ng-change="scheduleDaySelected('Saturday')">
+                    Sat
+                </ion-checkbox>          
+            </div>
+            <span class="col col-30">
+                <input ng-model="schedule.day.saturdayFrom" type="time" style="padding: 0">
+            </span>
+            <span class="col col-30">
+             <input ng-model="schedule.day.saturdayTo" type="time" style="padding: 0">
+            </span>
+        </div>
+
+         <div class="row ">
+            <div class="col col-40">
+                <ion-checkbox class="colored-icn" ng-model="schedule.day.sunday" ng-change="scheduleDaySelected('Sunday')">
+                    Sun
+                </ion-checkbox>          
+            </div>
+            <span class="col col-30">
+                <input ng-model="schedule.day.sundayFrom" type="time" style="padding: 0">
+            </span>
+            <span class="col col-30">
+             <input ng-model="schedule.day.sundayTo" type="time" style="padding: 0">
+            </span>
+        </div>
+	</div>
+	-->
+    </ion-content>
+</ion-modal-view>

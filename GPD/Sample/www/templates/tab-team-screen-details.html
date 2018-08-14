@@ -1,0 +1,42 @@
+<ion-view view-title="{{teamMemberDisplayName}}’s Active List" can-swipe-back="false" hide-nav-bar="false">
+	<ion-content class="padding" overflow-scroll="false" >
+		<div class="list card">
+			<ion-list>
+			    <ion-item class="item-divider" data-ng-if="todayWorkItemsCount.today>0">
+					   <b>Today</b>                           
+				</ion-item>
+				<div data-ng-repeat="tmain in teamScreenDetailsInfo">
+					<div data-ng-repeat="wi in tmain.todayWorkItems track by $index">
+						<ion-item ng-if="tmain.today" class="item" ng-style="selectRowBg(wi.workItemTypeID)" ng-click="goDetail(wi.id)">
+							<span data-ng-if="wi.workItemVSOState != 'Closed' ">
+								{{wi.name}}
+								 <br/>
+								<span class="item-note" data-ng-if="wi.projectID>1 ">
+								   ID:{{wi.workItemVSOID}},
+								   Pri:{{wi.workItemPriority}},
+								   State:{{wi.workItemVSOState}}
+								</span>
+							</span>
+						</ion-item>
+					</div>
+				</div>
+				<ion-item class="item-divider" data-ng-if="tomorrowWorkItemsCount.tomorrow>0">
+					<b>Tomorrow</b>                           
+				</ion-item>
+				<div data-ng-repeat="main in teamScreenDetailsInfo">
+					<div data-ng-repeat="wi in main.tomorrowWorkItems track by $index">
+						<ion-item ng-if="main.tomorrow" class="item" ng-style="selectRowBg(wi.workItemTypeID)" ng-click="goDetail(wi.id)">
+							{{wi.name}}
+							<br/>
+							<span class="item-note" data-ng-if="wi.projectID>1">
+							   ID:{{wi.workItemVSOID}},
+							   Pri:{{wi.workItemPriority}},
+							   State:{{wi.workItemVSOState}}
+							</span>
+						</ion-item>
+					</div>
+				</div>
+		    </ion-list>	
+	    </div>
+	</ion-content>
+</ion-view>

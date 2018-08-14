@@ -1,0 +1,233 @@
+<ion-view view-title={{title}} can-swipe-back="false" hide-nav-bar="false" cache-view="false">
+  <ion-content class="padding">
+  <div class="list card">  
+        <ion-list
+          show-delete="shouldShowDelete"
+          show-reorder="shouldShowReorder"
+          can-swipe="listCanSwipe"> 
+          <div data-ng-if="viewScope=='add-task'">   
+			      	<div class="list">
+                  <label class="item item-input">
+                      <span class="input-label">Title</span>
+                      <input type="text" data-ng-model="tasksObj.taskName">
+                  </label>
+                  
+                  <label class="item item-input">
+                    <span class="input-label">Description</span>
+                    <textarea data-ng-model="tasksObj.description"></textarea>
+                  </label>
+
+                  <label class="item item-input item-select" data-ng-if="projectID>1">
+                    <span class="input-label">Sprint</span>
+                      <select data-ng-model="tasksObj.iterationPath"
+                              data-ng-options="iteration.name as iteration.displayName for iteration in iterations">
+                            <option value="" selected>Select Iteration</option>                       
+                      </select>
+                  </label> 
+                  <label class="item item-input item-select">
+                     <span class="input-label">Priority</span>
+                        <select data-ng-model="tasksObj.workItemPriority" 
+                        data-ng-options="priority.id as priority.priority for priority in priorities">
+                              <option value="" selected>Select Priority</option>
+                      </select>
+                  </label>
+                        <label class="item item-input item-select">
+                            <span class="input-label">Original Estimate</span>
+                            <select data-ng-model="tasksObj.originalEstimate"
+                                    data-ng-options="esti.id as esti.estimation for esti in originalEstimation"
+                                    ng-change="originalEstimate(tasksObj.originalEstimate);">
+                                <option value="" selected>Select Hours</option>
+                            </select>
+                        </label>
+                   <label class="item item-input">
+                     <span class="input-label">Remaining Work</span>
+                     <input type="number" class="align-hr-right" data-ng-model="tasksObj.remainingWork" ng-keyup="remianingwork(tasksObj.remainingWork);">
+                  </label>	
+                   <label class="item item-input">
+                     <span class="input-label">Completed Work</span>
+                     <input type="number" class="align-hr-right" data-ng-model="tasksObj.completedWork"  ng-keyup="completedval(tasksObj.completedWork);">
+                  </label>
+                  <button data-ng-disabled="tasksObj.taskName.length < 3"
+                      class="button icon-left ion-android-add button-block button-positive" 
+                      data-ng-click="addNewTask(tasksObj)">
+                       Save Task
+                  </button>
+              </div>  
+          </div>
+		  
+		  
+		      <div data-ng-if="viewScope=='edit-workitem'">        
+              <div class="list">
+                  <label class="item item-input">
+                     <span class="input-label">Title</span>
+                     <input type="text" 
+                            class="edit-workitem-marquee" 
+                            scroll="{{scroll}}" 
+                            edit-work-item-title-marquee                       
+                            data-ng-model="workItemObj.name">
+                  </label>
+                  
+				  <!-- While using data-ng-click in the neting of "Label" element, the event was not triggered due to some other event handled on label -->
+              <div class="item item-input">					
+        					<span class="input-label col lbl-min-wid">Description</span>
+        					<div class="col-50">
+        						<textarea data-ng-show="descEditable" data-ng-model="workItemObj.description" rows="3" cols="20"></textarea>
+        						<input type="hidden" data-ng-model="descTemp">
+        						
+        						<div data-ng-click="$event.stopPropagation()">
+        							<button class="ion-icon-marg" data-ng-click="$parent.showDescription(workItemObj.description)" data-ng-if="workItemObj.description && descEditable != true">				
+        								<i class="icon ion-eye ion-icon-def"></i>
+        							</button>
+        							
+        							<button class="ion-icon-marg" data-ng-click="$parent.toggleDescEditable(workItemObj.description)">        								
+        								<i class="icon ion-edit"></i>
+        							</button>        									
+					  	      </div>						
+			    		</div>
+					
+				  </div>
+                  <!-- acceptance criteria -->
+                  <div class="item item-input" ng-if="workItemObj.workItemTypeID == 7">
+                      <span class="input-label col lbl-min-wid">Acceptance Criteria</span>
+                      <div class="col-50">
+                          <textarea data-ng-show="descEditable" data-ng-model="workItemObj.acceptanceCriteria" rows="3" cols="20"></textarea>
+                          <input type="hidden" data-ng-model="descTemp">
+                          <div data-ng-click="$event.stopPropagation()">
+                              <button class="ion-icon-marg" data-ng-click="$parent.showAcceptanceCriteria(workItemObj.acceptanceCriteria)" data-ng-if="workItemObj.acceptanceCriteria && descEditable != true">
+                                  <i class="icon ion-eye ion-icon-def"></i>
+                              </button>
+                              <button class="ion-icon-marg" data-ng-click="$parent.toggleAcceptanceCriteria(workItemObj.acceptanceCriteria)">
+                                  <i class="icon ion-edit"></i>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                  <!---->
+
+                  <label class="item item-input item-select" data-ng-if="projectID>1">
+                    <span class="input-label">Sprint</span>
+                      <select data-ng-model="workItemObj.iterationPath"
+                              data-ng-options="iteration.name as iteration.displayName for iteration in iterations">
+                              <option value="" selected>Select Iteration</option>                       
+                      </select>
+                  </label> 
+                  <label class="item item-input item-select">
+                     <span class="input-label">Priority</span>
+                        <select data-ng-model="workItemObj.workItemPriority" 
+                                data-ng-options="priority.id as priority.priority for priority in priorities">
+                                <option value="" selected>Select Priority</option>
+                      </select>
+                  </label>
+                  <label class="item item-input item-select" ng-if="workItemObj.workItemTypeID != 7">
+                      <span class="input-label">Original Estimate</span>
+                      <select data-ng-model="workItemObj.originalEstimate"
+                              data-ng-options="esti.id as esti.estimation for esti in originalEstimation"
+                              ng-change="originalEstimate(workItemObj.originalEstimate);">
+                          <option value="" selected>Select Hours</option>
+                      </select>
+                  </label>
+                   <label class="item item-input" ng-if="workItemObj.workItemTypeID != 7">
+                    <span class="input-label">Remaining Work</span>
+                    <input type="number" class="align-hr-right" data-ng-model="workItemObj.remainingWork" ng-keyup="remianingwork(workItemObj.remainingWork);" id="remianighour">
+                  </label>
+                   <label class="item item-input" ng-if="workItemObj.workItemTypeID != 7">
+                     <span class="input-label">Completed Work</span>
+                     <input type="number" class="align-hr-right" data-ng-model="workItemObj.completedWork" ng-keyup="completedval(workItemObj.completedWork);" id="completedhour">
+                  </label>
+
+                  <div class="item item-toggle"
+                       ng-if="projectID>1 && (workItemObj.tags || workItemObj.tags === '') && workItemObj.workItemVSOState !== 'Closed'">
+                      Blocked
+                      <label class="toggle toggle-balanced">
+                          <input type="checkbox" data-ng-model="blocked.selection">
+                          <div class="track">
+                              <div class="handle"></div>
+                          </div>
+                      </label>
+                  </div>
+
+                  <button
+                      class="button icon-left ion-edit button-block button-positive" 
+                      data-ng-click="editWorkItem(workItemObj)">
+                       Update Work Item
+                  </button>
+              </div>         
+              
+          </div>
+           <div data-ng-if="viewScope=='photos'">  
+                  <!--the divider -->
+                  <ion-item class="item-divider">
+                     <b>Photos</b>            
+                  </ion-item>
+                 
+                  <ion-scroll direction="x">
+                      <span data-ng-repeat="image in allImages" class="delimg">
+						<img data-ng-src="{{image.src}}" ng-if="fromFile(image.src)"
+                           data-ng-click="showImages($index)"
+                           class="image-list-thumb"/>
+                        <div ng-if="!fromFile(image.src)" style="margin: 10px;">
+                          <ion-spinner icon="circles"></ion-spinner>
+                      </div>
+						   <a href="" ng-if="fromFile(image.src)" class="image-delete-icon" ng-click="showConfirmationForRemoveImage(image, $index)"><i  class="ion-trash-a" ></i> </a>
+
+						</span>
+
+
+                  </ion-scroll>
+
+                  <button class="button icon-left ion-ios-camera button-block button-positive" 
+                           data-ng-click="attachPhotoFromCamera()">
+                    Attach Photo From Camera
+                  </button>
+                  <button class="button icon-left ion-ios-albums button-block button-positive" 
+                           data-ng-click="attachPhotoFromAlbum()">
+                    Attach Photo From Album
+                  </button>
+          </div>
+		  
+          <div data-ng-if="viewScope=='assign'">  
+              <!--the divider -->
+              <ion-item class="item-divider">
+                 <b>Assign Task</b>            
+              </ion-item>
+              <label class="item item-input item-select">
+                  <div class="input-label">
+                      Select team member to assign task
+                  </div>
+                  <select data-ng-change="assignTo(selectedMember)" data-ng-model="selectedMember">
+				            	<option value="" selected>Select</option>
+                      <option data-ng-repeat="mem in members" value="{{mem.displayName}}">
+                        {{mem.displayName}} - {{mem.uniqueName}}
+                      </option>
+                  </select>
+              </label>
+          </div>
+          
+      		<div data-ng-if="viewScope=='alarm'">                 
+              <button class="button icon-left ion-calendar button-block button-positive" 
+                           data-ng-click="pickCalendarEventDate()">
+                    Calendar Reminder
+              </button>
+               <button class="button icon-left ion-schedule-repeat button-block"
+                       data-ng-class="schedule.repeatIsSet==true?'btn-repeat-toggle1 button-positive':'btn-repeat-toggle2 button-positive'"
+                       data-ng-click="openRepeatPopup()">
+                    Repeat
+              </button>
+               <button class="button icon-left ion-schedule-repeat-one button-block"                   
+                         data-ng-class="repeatThroughScheduleSetForWorkItem=='true'?'btn-repeat-toggle1 button-positive':'btn-repeat-toggle2 button-positive'" 
+                           data-ng-click="openRepeatThroughPopup()"
+                           data-ng-show="schedule.repeatIsSet">
+                    Repeat Through
+              </button>
+			  <div style="text-align:center;">
+			  <ion-checkbox ng-model="schedule.repeatIsSet" 
+				                ng-show="schedule.repeatIsSet"
+				                ng-change="turnRepeatOff()">Cancel Repeat</ion-checkbox>
+								</div>
+          </div> 
+        </ion-list>  
+      
+  </div>   
+  </ion-content>
+
+</ion-view>

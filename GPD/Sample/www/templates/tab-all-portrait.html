@@ -1,0 +1,204 @@
+<div class="list card homepage" ng-if="portraitMode">
+	<ion-list sortable draggable=".item"
+			  show-delete="shouldShowDelete"
+			  show-reorder="shouldShowReorder"
+			  can-swipe="listCanSwipe"
+			  sorted="onReorder($fromIndex, $toIndex)"
+			  collapsed-buckets="collapsedBuckets">
+
+
+		<div data-ng-repeat="wItems in combineData.workItems | limitTo:numberOfItemsToDisplay track by $index">
+
+			<div ng-if="wItems.isHeader">
+				<!-- The badge counts -->
+				<span
+						class="badge homepage badge-assertive
+            					{{changeBadgeColor(wItems.bucketID)?badgeColorClass:''}}"
+						data-ng-repeat="workItemCount in combineData.workItemCounts"
+						data-ng-if="wItems.bucketID == workItemCount.bucketID "
+						data-ng-hide="wItems.bucketID==5&&showTriageBucket==false">
+              					{{workItemCount.workItemCount}}
+         				</span>
+				<!--the bucket divider -->
+
+				<ion-item
+						data-ng-hide="wItems.bucketID==5&&showTriageBucket==false"
+						class="item-divider homepage"
+						data-ng-click="expColBucket(wItems.bucketID,projectID)"
+						bucketID="{{wItems.bucketID}}">
+					<b>{{wItems.buckettitle}}</b>
+				</ion-item>
+				<button class="button bucket-add-task-button button-positive"
+						data-ng-click="addNewWorkItem(myWorkItems,wItems.bucketID)"
+						data-ng-hide="wItems.bucketID==5">
+					<i class="icon ion-plus"></i>
+				</button>
+			</div>
+			<ion-item
+					class="{{selectRowBg(wItems.workItemTypeID)}} item item-complex"
+					data-ng-if="wItems.projectID==projectID && !wItems.isHeader"
+					data-ng-click="showWorkItemUIButtons(wItems)"
+					bucketID="{{wItems.bucketID}}"
+					itemID="{{$index}}">
+
+				<div angular-marquee scroll="{{wItems.scroll}}"	duration="{{duration}}"><div>
+                       <span class="major-minor"
+						   data-ng-show="wItems.displayValue > 0">
+                        {{wItems.displayValue | number:1}}
+                      </span>
+					<span>
+                        {{wItems.name}}&nbsp;&nbsp;&nbsp;
+                     </span>
+				</div>
+
+				</div>
+
+				<br/>
+
+				<span class="item-note" data-ng-show="wItems.projectID>1">
+
+                  ID:{{wItems.workItemVSOID}},
+                  Pri:{{wItems.workItemPriority}},
+                  State:{{wItems.workItemVSOState}}
+               </span>
+
+				<div class="button-bar"
+					 data-ng-show="wItems.workItemTypeID==7&&showWorkItemButtons==true && showWorkItemID==wItems.id && wItems.bucketID!=5">
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/add-task">
+						<i class="icon ion-plus"> </i>
+					</a>
+
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/photos">
+						<i class="icon ion-camera"> </i>
+					</a>
+					<a class="button button-clear button-dark"
+					   data-ng-if="wItems.projectID>1"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/assign">
+						<i class="icon ion-person-add"></i>
+					</a>
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/alarm">
+						<i class="{{wItems.workItemHasRepeatSchedule > 0?'projects':''}} icon ion-calendar"></i>
+					</a>
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/edit-workitem">
+						<i class="icon ion-edit"></i>
+					</a>
+					<a class="button button-clear button-dark"
+					   href="javascript:void(0);" ng-click="startimer1(wItems.id);">
+						<i class="icon ion-ios-clock-outline clockicn{{wItems.id}}"></i>
+						<i class="icon ion-pause pauseicon{{wItems.id}}" style="display:none;"></i>
+					</a>
+
+				</div>
+				<div class="button-bar"
+					 data-ng-show="wItems.workItemTypeID==5&&
+                  showWorkItemButtons==true&&showWorkItemID==wItems.id&&wItems.bucketID!=5"
+					 data-ng-click="$event.stopPropagation()">
+					<a class="button button-clear button-dark"
+					   data-ng-if="wItems.projectID>1"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/assign">
+						<i class="icon ion-person-add"></i>
+					</a>
+
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/photos">
+						<i class="icon ion-camera"></i>
+					</a>
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/alarm">
+						<i class="{{wItems.workItemHasRepeatSchedule > 0?'projects':''}} icon ion-calendar"></i>
+					</a>
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/edit-workitem">
+						<i class="icon ion-edit"></i>
+					</a>
+					<a class="button button-clear button-dark startimer"
+					   href="javascript:void(0);" ng-click="startimer1(wItems.id);">
+						<i class="icon ion-ios-clock-outline clockicn{{wItems.id}}"></i>
+						<i class="icon ion-pause pauseicon{{wItems.id}}" style="display:none;"></i>
+
+					</a>
+
+
+				</div>
+
+
+				<!--mohit changes-->
+				<div class="button-bar"
+					 data-ng-show="wItems.workItemTypeID==1&&
+                  showWorkItemButtons==true&&showWorkItemID==wItems.id&&wItems.bucketID!=5"
+					 data-ng-click="$event.stopPropagation()">
+					<a class="button button-clear button-dark"
+					   data-ng-if="wItems.projectID>1"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/assign">
+						<i class="icon ion-person-add"></i>
+					</a>
+
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/photos">
+						<i class="icon ion-camera"></i>
+					</a>
+
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/alarm">
+						<i class="{{wItems.workItemHasRepeatSchedule > 0?'projects':''}} icon ion-calendar"></i>
+					</a>
+
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/edit-workitem">
+						<i class="icon ion-edit"></i>
+					</a>
+
+					<a class="button button-clear button-dark startimer"
+					   href="javascript:void(0);" ng-click="startimer1(wItems.id);">
+						<i class="icon ion-ios-clock-outline clockicn{{wItems.id}}"></i>
+						<i class="icon ion-pause pauseicon{{wItems.id}}" style="display:none;"></i>
+					</a>
+
+				</div>
+				<!--mohit changes-->
+
+				<div class="button-bar"
+					 data-ng-if="showWorkItemButtons==true&&showWorkItemID==wItems.id&&wItems.bucketID==5"
+					 data-ng-click="$event.stopPropagation()">
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/triageDescription">
+						<i class="icon ion-eye"></i>
+					</a>
+
+				</div>
+				<ion-option-button class="button-assertive"
+								   data-ng-click="showConfirmationForRemove(wItems)"
+								   data-ng-if="wItemsbuckettitle !='Completed' && wItems.buckettitle !='Triage' ">
+					Remove
+				</ion-option-button>
+
+				<ion-option-button class="button-positive"
+								   data-ng-click="markWorkItemAsClosed(wi)"
+								   data-ng-if="wItems.buckettitle !='Completed' && wItems.buckettitle !='Triage'">
+					Close
+				</ion-option-button>
+
+				<ion-option-button class="button-calm"
+								   data-ng-click="moveTaskToTodayBucketFromSwipe(wi)"
+								   data-ng-if="wItems.buckettitle !='Completed' && wItems.buckettitle !='Triage' && wItems.bucketID == 3">
+					MoveToToday
+				</ion-option-button>
+
+				<ion-option-button class="button-assertive"
+								   data-ng-click="deleteTriageWorkItem(wItems)"
+								   data-ng-if="wItems.buckettitle=='Triage'">
+					Remove
+				</ion-option-button>
+				<ion-option-button class="button-assertive"
+								   data-ng-click="markCompletedWorkItemAsClosed(wItems)"
+								   data-ng-if="wItems.buckettitle =='Completed'">
+					Hide
+				</ion-option-button>
+			</ion-item>
+		</div>
+	</ion-list>
+</div>

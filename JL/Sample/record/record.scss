@@ -1,0 +1,52 @@
+page-record {
+    .track-time {
+        font-size: 34px;
+        text-align: center;
+        margin-top: 60px;
+    }
+
+    .button-size-1 {
+        height: 60px;
+        width: 60px;
+        font-size: 15px;
+    }
+
+    .button-size-2 {
+        width: 30px;
+        height: 30px;
+        margin-top: 20px;
+    }
+
+    button.button.button-text {
+        color: #00b4d0;
+        margin-top: 20px;
+
+        .button-inner {
+            text-transform: capitalize;
+        }
+    }
+
+    .record-controls {
+        margin-top: 40px;
+    }
+
+    .record-button {
+        font-size: 25px;
+
+        &::before {
+            background-color: #ff804c;
+            content: "";
+            display: block;
+            position: absolute;
+            left: 2px;
+            right: 2px;
+            top: 2px;
+            bottom: 2px;
+            border-radius: 50%;
+        }
+    }
+
+    button .icon {
+        z-index: 1;
+    }
+}

@@ -1,0 +1,232 @@
+<ion-view view-title={{title}} can-swipe-back="false" hide-nav-bar="false">
+ <ion-content>
+		<div class="list card" data-ng-if="viewScope=='project'">
+		
+			<button class="button icon-left ion-android-add button-block button-outline button-positive"
+             data-ng-disabled="internetDisconnected"
+			 data-ng-click="loginToVSTS()">
+			    New Project Wizard
+			</button>
+
+			<button class="button icon-left ion-trash-a button-block button-outline button-assertive" 
+			data-ng-disabled="internetDisconnected"
+			data-ng-click="deleteProject()">
+					Delete Project
+			</button>
+
+			<button class="button icon-left ion-edit button-block button-outline button-positive" 
+			data-ng-disabled="internetDisconnected"
+			data-ng-click="showUpdateProjPopup()">
+				Edit Project
+			</button>
+			
+			<button class="button icon-left button-block button-outline button-positive" 
+			data-ng-disabled="internetDisconnected"
+			data-ng-click="addNewIterationModal()">
+			   <i class="ion-sprint"></i>
+				Create Sprint
+			</button>
+			
+			<div class="item item-divider">
+			    Backup/Restore Personal Project
+			</div>
+
+			<button class="button icon-left ion-ios-upload-outline button-block button-outline button-positive" 
+			data-ng-disabled="internetDisconnected"
+			data-ng-click="exportPersonalProject()">
+				Backup
+			</button>
+
+	        <button class="button icon-left ion-ios-download-outline button-block button-outline button-positive"
+			 data-ng-click="importPersonalProject()">
+			    Restore
+			</button>
+
+			
+			<div class="item item-divider" data-ng-show="false">
+			    Triage Projects
+			</div>
+
+			<button class="button icon-left ion-email-unread button-block button-outline button-positive" 
+			data-ng-disabled="internetDisconnected"
+			data-ng-show="false"
+			ui-sref='tab.projectSettings({viewscope:"triage"})'>
+				Triage Inbox
+			</button>
+
+
+		</div>
+		
+		<div class="list card" data-ng-if="viewScope=='triage'">
+			<form name="emailSettingsForm" novalidate data-ng-submit="saveTriageEmailSettings()">
+				<label class="item item-input item-select">
+					<span class="input-label">
+					 Project<small>*</small>
+					</span>
+					<select data-ng-model="triageEmailObj.projectID" 
+					        data-ng-required="true" 
+					        data-ng-options="vstsProjectForTriage.id as vstsProjectForTriage.areaPathNodeName for vstsProjectForTriage in vstsProjectsForTriage">
+					   	   <option value="" selected>Select Project</option>		
+					</select>
+			  	</label>
+	     		<label class="item item-input item-select">
+					<span class="input-label">
+					 Mail Provider<small>*</small>
+					</span>
+					<select data-ng-model="triageEmailObj.emailProviderID" data-ng-required="true" 
+					  data-ng-options="emailProvider.id as emailProvider.name for emailProvider in emailProviders">	
+					   <option value="" selected>Select Mail Provider</option>				
+					</select>
+			  	</label>
+			  	 <label class="item item-input">
+                      <span class="input-label">Mailbox Address<small>*</small></span>
+                      <input type="text" data-ng-model="triageEmailObj.triageInboxAddress" data-ng-required="true"  placeholder="i.e john.doe@gmail.com">
+                  </label>
+			  	
+		        <label class="item">
+		          <button data-ng-disabled="emailSettingsForm.$invalid" class="button button-block button-positive" type="submit">Save </button>
+		        </label>
+   			</form>		
+		</div>
+		
+			
+		
+		<div class="list card" data-ng-if="viewScope=='app'">
+			
+			<form name="backlogform" novalidate data-ng-submit="selectRefreshBackLogTime(selectedTime, notification_recv, notification_send, selectedHours)">
+		        <label class="item item-input item-select">
+					<div class="input-label">
+					  Backlog refresh interval <small>*</small>
+					</div>
+					<select data-ng-model="selectedTime" data-ng-required="true" 
+					  data-ng-options="backlogRefreshTime.time as backlogRefreshTime.name for backlogRefreshTime in backlogRefreshTimes">
+					
+					</select>
+				 </label>
+
+				<label class="item item-input item-select">
+					<div class="input-label">
+						Default remaining hours <small>*</small>
+					</div>
+					<select data-ng-model="selectedHours" data-ng-required="true"
+							data-ng-options="backlogRefreshTime.time as backlogRefreshTime.name for backlogRefreshTime in remiaingHours">
+
+					</select>
+				</label>
+
+			     <label class="item item-divider">
+					<div class="input-label">
+					  Leaderboard Game
+					</div>
+				 </label>
+				<div class="item item-toggle">
+			  		Receive Notifications
+					<label class="toggle toggle-balanced">
+					   <input type="checkbox" data-ng-model="notification_recv" ng-change="changeLeaderBrdNotification(notification_recv)">
+					   <div class="track">
+						 <div class="handle"></div>
+					   </div>
+					</label>
+				</div>
+				
+				
+				 <div class="item item-toggle">
+			  		Send Notifications
+					<label class="toggle toggle-balanced">
+					   <input type="checkbox" data-ng-model="notification_send">
+					   <div class="track">
+						 <div class="handle"></div>
+					   </div>
+					</label>
+				</div>
+				
+		        <label class="item">
+		          <button data-ng-disabled="backlogform.$invalid" class="button button-block button-positive" type="submit">Save </button>
+		        </label>
+		    </form>	
+      		
+		</div>
+
+
+		<div class="card" data-ng-if="viewScope=='subscribe'">
+			    <div class="item item-text-wrap" 
+			    data-ng-hide="freeTrialDaysPast > 30 || subscriptionPrice==undefined">
+				  <small><span class="subscription-note">*</span>You are currently in the free trial period of GoPlanDo <strong> which will end after {{30 -freeTrialDaysPast }} day(s) on {{subExpiryDate}}</strong>. <br><br> Please subscribe to the app before then to continue using all features. 
+				  <br>
+				  <br>
+					  Thanks!</small>
+				</div>
+				
+				<div class="item item-text-wrap">
+				   <small>{{subscriptionDesc}}</small>
+				</div>
+				
+				<button class="button button-block button-balanced"
+				data-ng-hide="subscriptionPrice==undefined"
+                data-ng-disabled="internetDisconnected"
+				data-ng-click="buySubscription()">
+				  	Subscribe Yearly for {{subscriptionPrice}}
+				</button>
+
+			    <button 
+			    class="button button-block button-positive" 
+			    data-ng-show="subscriptionPrice==undefined"
+                data-ng-disabled="internetDisconnected"
+				data-ng-click="cancelSubscription()">
+				  	Cancel Subscription
+				</button>
+				<small>
+				  <br> <b>Note:</b>
+				  <br>   - Payment will be charged to your {{appStorePlatform}} account at confirmation of purchase
+				  <br>   - The subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period
+				  <br>   - Your account will be charged the same price for renewal within 24-hours prior to the end of the current period
+				  <br>   - You can manage your subscriptions and auto-renewal may be turned off by going to Account Settings after purchase
+				  <br>   - You may review our Privacy Policy or Terms of Use within this App via Settings > About
+				  <br>   - Any unused portion of the free trial period, will be forfeited when a subscription is purchased
+				  </small>
+
+      <button class="button button-block bar-dark" data-ng-hide="subscriptionPrice==undefined" style="margin-top: 10px;background: #323232;color: #fff;" ng-click="restoreSubscription()">Restore Purchases</button>
+		</div>
+
+
+	 	<div class="list card" data-ng-if="viewScope=='auth'">
+
+			<div ng-if="showLogin">
+				<form name="loginform" novalidate data-ng-submit="loginUser(user)">
+
+					<div class="list">
+						<label class="item item-input">
+							<span class="input-label">Username</span>
+							<input type="text" ng-model="user.username" ng-required="true">
+						</label>
+						<label class="item item-input">
+							<span class="input-label">Password</span>
+							<input type="password" ng-model="user.password" ng-required="true" >
+						</label>
+					</div>
+
+					<label class="item">
+						<button data-ng-disabled="loginform.$invalid" class="button button-block button-positive" type="submit">Authenticate</button>
+					</label>
+				</form>
+				<label class="item">
+					<button ng-click="openRegisterModal()" class="button button-block button-balanced"><u>Register</u></button>
+				</label>
+			</div>
+			<div ng-if="!showLogin">
+				<div class="item" style="text-align: center">
+					You are currently logged in as : <b>{{hireUser.username}}</b>
+				</div>
+				<div class="row" style="text-align: center">
+					<i class="icon ion-checkmark-circled" style="font-size: 30px;color: green;margin: auto;"></i>
+				</div>
+				<div class="row" style="text-align: center">
+					<button ng-click="logoutUser()" class="button button-block button-assertive">Log Out</button>
+				</div>
+
+			</div>
+
+		</div>
+
+	</ion-content>
+</ion-view>

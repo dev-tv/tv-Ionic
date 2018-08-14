@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-navbar class="toolbar-ios" hideBackButton="true">
+    <img tappable style="margin-left: 2vw" (click)="toggleMenu()" class="icon menu" width="30vw" height="30vw" src="assets/icon/burger.svg" />
+    <ion-title>Mixer</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <!--<ion-icon name="ios-settings-outline"></ion-icon>-->
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="no-scroll">
+
+  <div style="height: 90vh">
+    <div style="height: 7vh">
+  <ion-item style="padding-right: 16px;min-height: 30px !important;">
+    <h5>{{backtrackName}}</h5>
+    <button [disabled]="!(backtrackSlidesIndexs!=1 && recordSlidesIndexs!=1)" tappable (click)="openOptionModalBacktrack()" class="mix-track-menu" ion-button clear small item-right>
+      <img class="rotate" style="margin: 0px;"
+           src="assets/icon/mix_volume.png"/>
+    </button>
+  </ion-item>
+    </div>
+
+    <div style="height: 24vh">
+  <ion-slides #backtrackSlides class="backtrack-slider" style="margin-top: 5%;" loop="true"
+              [spaceBetween]="spaceBetween"
+              (ionSlideDidChange)="onBacktrackChanged()">
+    <ion-slide>
+      <img src="assets/icon/backtrack_default.png">
+    </ion-slide>
+
+    <ion-slide *ngFor="let backtrack of backtracks">
+      <img [src]="backtrack.ImageUrl">
+    </ion-slide>
+
+  </ion-slides>
+    </div>
+
+    <div style="height: 7vh">
+  <ion-item style="padding-right: 16px;min-height: 30px !important;"><h5>{{recordName}}</h5>
+    <button [disabled]="!(backtrackSlidesIndexs!=1 && recordSlidesIndexs!=1)" tappable (click)="openOptionModalRecord()" class="mix-track-menu" ion-button clear small item-right>
+      <img class="rotate" style="margin: 0px;"
+           src="assets/icon/mix_volume.png"/>
+    </button>
+  </ion-item>
+    </div>
+
+    <div style="height: 23vh">
+  <ion-slides #recordSlides class="record-slider" style="margin-top: 5%;" loop="true" [spaceBetween]="spaceBetween"
+              (ionSlideDidChange)="onRecordChanged()">
+    <ion-slide>
+      <img src="assets/icon/recording_default.png">
+    </ion-slide>
+
+    <ion-slide *ngFor="let record of records;let i = index;">
+      <img [src]="record.ImageUrl">
+    </ion-slide>
+
+  </ion-slides>
+    </div>
+
+    <div style="height: 25vh">
+  <div class="controls padding">
+    <ion-grid>
+      <ion-row >
+        <ion-col width-50>
+          <span class="volume-bar-label">Session</span>
+        </ion-col>
+        <ion-col class="text-right" width-50>
+          <span class="volume-bar-label">Background melody</span>
+        </ion-col>
+      </ion-row>
+      <ion-row class="volume-bar-row">
+        <ion-range [disabled]="!(backtrackSlidesIndexs!=1 && recordSlidesIndexs!=1)" class="volume-bar volume-bar-center range-md" min="-100" max="100" debounce="700"
+                   [(ngModel)]="volumeBarValue" (ngModelChange)="onVolumeBarChanged()"></ion-range>
+        <div class="second-volume-bar" [ngStyle]="{'left': volumeBarLeft + '%', 'right': volumeBarRight + '%'}"
+             [ngClass]="{'inverse': volumeBarValue < 0}"></div>
+      </ion-row>
+      <ion-row>
+        <ion-col width-33></ion-col>
+        <ion-col style="line-height: 13vh" class="text-center" width-33>
+          <button class="track-play-button button-round" *ngIf="isPlay" (click)="pause()" ion-button clear small>
+            <ion-icon name="pause"></ion-icon>
+          </button>
+          <button [disabled]="!(backtrackSlidesIndexs!=1 && recordSlidesIndexs!=1)" class="track-play-button button-round" *ngIf="!isPlay" (click)="play()" ion-button clear small>
+            <ion-icon name="play"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col style="line-height: 10vh" width-33>
+          <button class="track-save" ion-button clear small (click)="save()"><div style="color: #00aabd">Save</div></button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+    </div>
+
+  </div>
+
+</ion-content>

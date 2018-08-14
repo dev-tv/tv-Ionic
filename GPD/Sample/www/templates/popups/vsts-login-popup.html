@@ -1,0 +1,82 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <button class="button icon-left button-clear" data-ng-click="showHelp('Adding VSTS Project')">
+    	Help?
+    </button>
+    <h1 class="title">Add VSTS Project</h1>   
+    <button class="button button-clear" data-ng-click="closeVSTSLoginModal()">Close</button>
+  </ion-header-bar>
+  <ion-content overflow-scroll="false">  
+	    <div class="list" data-ng-show="showAddVSTSInstance">
+	    	<form name="getVSTSProjectsForm" novalidate>	        
+					<label class="item item-input">
+			          <span class="input-label">Instance Name <small>*</small></span>
+			          <input data-ng-required="true" 
+			                 type="text" 
+			                 data-ng-model="loginData.vstsInstanceName" 
+			                 placeholder="i.e. fabrikam">
+			        </label>
+			        <label class="item">
+					        <button class="button button-block button-positive"  
+		 						data-ng-disabled="checkAccountTitle()"
+					            data-ng-click="getToken(loginData.vstsInstanceName)">
+					               <strong>Get a VSTS access token</strong>
+					        </button>
+			        </label>
+				  	<label class="item item-input">
+			          <span class="input-label">Personal Token<small>*</small></span>
+			          <input data-ng-required="true" type="text" 
+			                 data-ng-model="loginData.userToken"
+			                 placeholder="i.e qbad6apucyn3lj7ol4olpjdwvj5xyryixm6xwn226kllxtxzi6xd">
+			        </label>
+			       
+			        <label class="item">
+			                <button data-ng-disabled="getVSTSProjectsForm.$invalid" 
+			                        data-ng-required="true"
+			                  class="button button-block button-positive" 
+			        		  data-ng-click="getVSTSProjects()">
+			        		  Get Project(s)
+			        		</button>
+			        </label>
+	        </form>
+	    </div>
+	   
+	    <div class="list" data-ng-show="showProjectSelection">
+	    	
+	    	<form name="selectVSTSProjectsForm" novalidate>
+				<label class="item item-input item-select">
+							<div class="input-label">
+								<b> Select project</b>
+							</div>
+							<select data-ng-required="true" 
+									data-ng-model="selectedProject"
+							        data-ng-options="vstsProject as vstsProject.name for vstsProject in vstsProjects">
+								<option value="" selected>Select Project</option>
+
+							</select>
+				</label>
+				<label class="item">
+			            <button data-ng-disabled="selectVSTSProjectsForm.$invalid" 
+			                  class="button button-block button-positive" 
+			                  data-ng-click="showVSTSProjectAreaPath(selectedProject)">
+			                  Next
+			            </button>
+		        </label>
+	        </form>
+	    </div>
+	    <div class="list" data-ng-show="showAddProjectButton">
+	    	   <label class="item">
+			            <button
+			                  class="button button-block button-positive" 
+			                  data-ng-click="saveProject()">
+			                  Next
+			            </button>
+		        </label>
+	    </div>
+
+	  <div class="acc-link" data-ng-show="showAddVSTSInstance">
+		  <a ng-click="createVstsAccountLink()" href="#">Create a new VSTS account</a>
+	  </div>
+
+  </ion-content>
+</ion-modal-view>

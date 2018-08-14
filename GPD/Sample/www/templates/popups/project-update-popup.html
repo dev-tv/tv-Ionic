@@ -1,0 +1,160 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <button class="button button-clear"  data-ng-show="false" data-ng-click="showHelp('Updating the project')"> 
+    	Help?
+    </button>
+    <h1 class="title">Update Project Settings</h1>
+    <button class="button button-clear" data-ng-click="closeProjectUpdateModal()">
+    	Close
+    </button>    
+  </ion-header-bar>
+  <form name="form" novalidate>
+		  <ion-content overflow-scroll="false">    
+		    	<label class="item item-input item-select">
+					<div class="input-label">Select project
+					</div>
+					<select data-ng-model="vstsProjectToUpdate" 
+					        data-ng-required="true" 
+					        data-ng-change="iterationsByProject(vstsProjectToUpdate)">
+						<option value="" selected>Select Project</option>
+						<option data-ng-repeat="vstsProject in addedProjects" 
+						        value="{{vstsProject}}">{{vstsProject.areaPathNodeName}}-{{vstsProject.iteration_path}}</option>
+					</select>
+				</label>
+				
+				<label class="item item-input" 
+				       data-ng-show="$parent.updateProjectConfig.selectedArea && vstsProjectToUpdate">
+					<div class="input-label">
+						<p class="area-path-text">  
+							<strong>{{$parent.updateProjectConfig.selectedArea}}</strong>
+						</p>    
+					</div>
+				</label>	
+				<label class="item item-input item-select" 
+				       data-ng-click="showPath()" 
+				       data-ng-show="$parent.vstsProjectToUpdate">
+					<div class="input-label">
+					Select Area Path <small>*</small>
+					</div>
+				</label>
+				<div class="padding" data-ng-if="path == true" data-ng-show="$parent.vstsProjectToUpdate">
+				  <treecontrol class="tree-light"
+					tree-model="areaPathTreeControlModel"
+					options="treeOptions"
+					on-selection="showUpdatedAreaPath(node)">
+					 <span>  {{node.name}}   </span>
+				   </treecontrol>
+				</div>
+				
+				<div class="item item-toggle" data-ng-show="$parent.updateProjectConfig.selectedArea && vstsProjectToUpdate">
+				 Include Root Path
+				 <label class="toggle toggle-balanced">
+				   <input type="checkbox" data-ng-model="$parent.updateProjectConfig.root">
+				   <div class="track">
+					 <div class="handle"></div>
+				   </div>
+				 </label>
+				</div>
+				  
+			  	<label class="item item-input item-select" 
+			  	       data-ng-show="$parent.updateProjectConfig.selectedArea && vstsProjectToUpdate">
+					<div class="input-label">
+					  Sprint 
+					</div>
+					<select data-ng-required="true" 
+					        data-ng-model="$parent.updateProjectConfig.selectedIteration"
+		                    data-ng-options="iteration.name as iteration.displayName for iteration in iterations">
+
+				
+					</select>
+				</label>
+
+					<!-- team selector -->
+			    <label class="item item-input" data-ng-show="$parent.updateProjectConfig.selectedArea && vstsProjectToUpdate">
+                 <span class="input-label">Current VSTS Team</span>
+                 <input ion-autocomplete type="text" style="padding-left: 25px"
+                 		readonly="readonly"
+                 		class="ion-autocomplete" 
+                 		autocomplete="on"
+                 		item-view-value-key="name"
+                 	    max-selected-items="1"
+                 	    data-ng-required="true" 
+                 	    data-ng-model="$parent.updateProjectConfig.selectedVstsTeam"
+                 	    items-method="getVSTSTeams(query)"
+                 	    placeholder="Click to select VSTS team"
+                 	     />
+                </label>
+		    
+		    </ion-content>
+		    <button data-ng-disabled="form.$invalid" 
+		            data-ng-show="$parent.updateProjectConfig.selectedArea && vstsProjectToUpdate"
+		                  class="button update-project button-block button-positive" 
+		                  data-ng-click='updateProject()'>Update VSTS Project</button>
+    </form>
+  <div ng-if="guidedState >= 0" style="position: absolute;width: 100%">
+
+    <!--Area Path-->
+    <div ng-if="guidedState === 0 && path"  style="position: absolute;top: 220px;width: 100%;height: 150px;">
+      <div class="arrow-up" style="margin-left: 20px"></div>
+      <div class="guild-container">
+        <p class="slide-in-ways" style="margin-top: 10px">VSTS area path for your project</p>
+        <button ng-click="nextGuidState()" class="button button-outline button-positive slide-in-both-ways guild-next">Next</button>
+      </div>
+    </div>
+
+    <div ng-if="guidedState === 0 && !path"  style="position: absolute;top: 180px;width: 100%;height: 150px;">
+      <div class="arrow-up" style="margin-left: 20px"></div>
+      <div class="guild-container">
+        <p class="slide-in-ways" style="margin-top: 10px">VSTS area path for your project</p>
+        <button ng-click="nextGuidState()" class="button button-outline button-positive slide-in-both-ways guild-next">Next</button>
+      </div>
+    </div>
+
+    <!--Root Path-->
+    <div ng-if="guidedState === 1 && path" style="position: absolute;top: 270px;width: 100%;height: 160px;">
+      <div class="arrow-up" style="margin-left: 20px"></div>
+      <div class="guild-container" style="height: 130px;">
+        <p class="slide-in-ways">Turn on to import all backlog items not mapped to a sprint. ⚠️Warning: Large backlogs can cause hangs</p>
+        <button ng-click="nextGuidState()" class="button button-outline button-positive slide-in-both-ways guild-next">Next</button>
+      </div>
+    </div>
+	<div ng-if="guidedState === 1 && !path" style="position: absolute;top: 235px;width: 100%;height: 160px;">
+		<div class="arrow-up" style="margin-left: 20px"></div>
+		<div class="guild-container" style="height: 130px;">
+			<p class="slide-in-ways">Turn on to import all backlog items not mapped to a sprint. ⚠️Warning: Large backlogs can cause hangs</p>
+			<button ng-click="nextGuidState()" class="button button-outline button-positive slide-in-both-ways guild-next">Next</button>
+		</div>
+	</div>
+
+    <!--Sprint-->
+    <div ng-if="guidedState === 2 && path" style="position: absolute;top: 315px;width: 100%;height: 100px;">
+      <div class="arrow-up" style="margin-left: 20px"></div>
+      <div class="guild-container" style="height: 70px;">
+        <button ng-click="nextGuidState()" class="button button-outline button-positive slide-in-both-ways guild-next">Next</button>
+      </div>
+    </div>
+	  <div ng-if="guidedState === 2 && !path" style="position: absolute;top: 280px;width: 100%;height: 100px;">
+		  <div class="arrow-up" style="margin-left: 20px"></div>
+		  <div class="guild-container" style="height: 70px;">
+			  <button ng-click="nextGuidState()" class="button button-outline button-positive slide-in-both-ways guild-next">Next</button>
+		  </div>
+	  </div>
+
+    <!--Team-->
+    <div ng-if="guidedState === 3 && path" style="position: absolute;top: 365px;width: 100%;height: 130px;">
+      <div class="arrow-up" style="margin-left: 20px"></div>
+      <div class="guild-container" style="height: 100px;">
+        <p class="slide-in-ways">Select team configured in VSTS</p>
+        <button ng-click="nextGuidState()" class="button button-outline button-positive slide-in-both-ways guild-next">Finish</button>
+      </div>
+    </div>
+	  <div ng-if="guidedState === 3 && !path" style="position: absolute;top: 330px;width: 100%;height: 130px;">
+		  <div class="arrow-up" style="margin-left: 20px"></div>
+		  <div class="guild-container" style="height: 100px;">
+			  <p class="slide-in-ways">Select team configured in VSTS</p>
+			  <button ng-click="nextGuidState()" class="button button-outline button-positive slide-in-both-ways guild-next">Finish</button>
+		  </div>
+	  </div>
+
+  </div>
+</ion-modal-view>

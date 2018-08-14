@@ -1,0 +1,68 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Sync progress</h1>
+    <button class="button button-clear" data-ng-click="cancelSync()">
+        Cancel
+    </button>
+  </ion-header-bar>
+  <ion-content overflow-scroll="true">
+      <div class="row" data-ng-show="showFetchingMessage"> 
+        <div class="progress-text-header">     
+           Fetching Work Items From VSTS Online...  
+        </div>   
+      </div>
+      <div class="row" data-ng-show="maxWorkItemsToBeSynced > 0">
+          <div class="work-item-progress-text">
+              Syncing Work Item ID, {{workItemIDBeingSynced}}
+              <br>
+              <strong>Synced Work Items / Total Work Items</strong> 
+              <br>
+              {{currentWorkItemsSynced}} / {{maxWorkItemsToBeSynced}}
+          </div>
+      </div>
+       <div class="row" data-ng-show="maxAttachmentsToBeSynced > 0">
+          <div class="attachment-progress-text">
+              Syncing attachment, {{attachmentBeingSyncedName}}
+              <br> 
+              For Work Item ID, {{attachmentBeingSyncedWorkItemID}}
+              <br>
+              <strong>Synced Attachments / Total Attachments</strong>
+              <br> 
+              {{currentAttachmentBeingSynced}} / {{maxAttachmentsToBeSynced}}
+          </div>
+      </div>
+      <div class="row">
+          <round-progress
+            data-ng-show="maxWorkItemsToBeSynced > 0"
+            max="maxWorkItemsToBeSynced"
+            current="currentWorkItemsSynced"
+            color="#45ccce"
+            bgcolor="#eaeaea"
+            radius="90"
+            stroke="20"
+            rounded="false"
+            clockwise="false"
+            responsive="true"
+            offset="10"
+            duration="800"
+            animation="easeInOutQuart"
+            animation-delay="0">
+              <round-progress
+                    data-ng-show="maxAttachmentsToBeSynced > 0"
+                    max="maxAttachmentsToBeSynced"               
+                    current="currentAttachmentBeingSynced"
+                    color="#ff7f7f"
+                    bgcolor="transparent"
+                    radius="90"
+                    stroke="20"
+                    rounded="false"
+                    clockwise="false"
+                    responsive="true"
+                    duration="800"
+                    animation="easeInOutQuart"
+                    animation-delay="0"
+                    offset="inherit">
+          </round-progress>
+      </div>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,363 @@
+<ion-view view-title="All" can-swipe-back="false" hide-nav-bar="true"  cache-view="true" ng-class="{'team-landscape-tab-view' : !portraitMode}">
+	<div class="list homepage-header" ng-if="portraitMode">
+		<div class="item item-input-inset" style="padding-bottom: 13px !important;">
+			<label class="item-input-wrapper">
+				<input id="work-item-input-text"
+					   type="text" placeholder="Type To Add Work Item" data-ng-model="myWorkItems.name">
+			</label>
+		</div>
+		<button class="button btn-search button-icon icon ion-ios-search-strong" data-ng-click="showFilterBar('')">
+		</button>
+		<button
+				id="btn-work-item-type-switch"
+				class="button"
+				data-ng-class="workItemButtonState=='user story'?'btn-toggle1 button-positive':'btn-toggle2 button-positive'"
+				data-ng-click="changeWorkItemButtonState()">
+			{{workItemButtonText}}
+		</button>
+	</div>
+	<div class="tabs-striped tabs-top tabs-background-light tabs-color-dark" style="overflow:unset;">
+		<div class="tabs landscape-tabs {{devicePlatform === 'IOS' ? 'homepage-header-ios' : 'homepage-header'}}">
+			<a class="tab-item {{project.id==projectID?'active':''}}" style ="text-align: -webkit-center;position: relative;"
+			   data-ng-repeat="project in combineData.projects" ng-if="project.show"
+			   href="#/tab/all/{{project.id}}">
+				<b>  {{project.areaPathNodeName}} </b>
+				<i ng-show="project.finish_date != 'personal'" class="proj_finish_date">sprint ends:{{project.finish_date | date:'shortDate'}}</i>
+				<!--<span ng-show="project.finish_date != 'personal'" class="proj_finish_date">sprint ends:{{project.finish_date | date:'shortDate'}} </span>-->
+			</a>
+			<div class="tab-item" style ="text-align: -webkit-center;position: relative;max-width: 15%;padding-top: 1.5%" ng-if="combineData.projects.length > 2"
+			   ng-click="openPopover()">
+				<!--<b>  ... </b>-->
+				<i class="icon ion-more"> </i>
+			</div>
+		</div>
+	</div>
+	<ion-content class="padding" overflow-scroll="false">
+		<ion-refresher
+				pulling-text="{{refresherText}}"
+				on-pulling="pull()"
+		>
+		</ion-refresher>
+		<!--
+		<div ng-include src="'./templates/tab-all-portrait.html'" ng-if="portraitMode">
+		</div>
+		<div ng-include src="'./templates/tab-all-landscape.html'" ng-if="!portraitMode">
+		</div>
+		-->
+		
+<div class="list card homepage" ng-if="portraitMode">
+	<ion-list sortable draggable=".item"
+			  show-delete="shouldShowDelete"
+			  show-reorder="shouldShowReorder"
+			  can-swipe="listCanSwipe"
+			  sorted="onReorder($fromIndex, $toIndex)"
+			  collapsed-buckets="collapsedBuckets">
+
+
+		<div data-ng-repeat="wItems in combineData.workItems | limitTo:numberOfItemsToDisplay track by $index">
+
+			<div ng-if="wItems.isHeader">
+				<!-- The badge counts -->
+				<span
+						class="badge homepage badge-assertive
+            					{{changeBadgeColor(wItems.bucketID)?badgeColorClass:''}}"
+						data-ng-repeat="workItemCount in combineData.workItemCounts"
+						data-ng-if="wItems.bucketID == workItemCount.bucketID "
+						data-ng-hide="wItems.bucketID==5&&showTriageBucket==false">
+              					{{workItemCount.workItemCount}}
+         				</span>
+				<!--the bucket divider -->
+
+				<ion-item
+						data-ng-hide="wItems.bucketID==5&&showTriageBucket==false"
+						class="item-divider homepage"
+						data-ng-click="expColBucket(wItems.bucketID,projectID)"
+						bucketID="{{wItems.bucketID}}">
+					<i class="icon ion-chevron-down" ng-if="combineData.workItemCounts[wItems.bucketID - 1].workItemCount && combineData.workItemCounts[wItems.bucketID - 1].workItemCount !== 0 && !checkCollapse(wItems.bucketID,projectID)"></i>
+					<i class="icon ion-minus-round" ng-if="combineData.workItemCounts[wItems.bucketID - 1].workItemCount && combineData.workItemCounts[wItems.bucketID - 1].workItemCount !== 0 && checkCollapse(wItems.bucketID,projectID)"></i>
+					<i class="icon ion-minus-round" ng-if="!combineData.workItemCounts[wItems.bucketID - 1].workItemCount || combineData.workItemCounts[wItems.bucketID - 1].workItemCount === 0"></i>
+					<b>{{wItems.buckettitle}}</b>
+				</ion-item>
+				<button class="button bucket-add-task-button button-positive"
+						data-ng-click="addNewWorkItem(myWorkItems,wItems.bucketID)"
+						data-ng-hide="wItems.bucketID==5">
+					<i class="icon ion-plus"></i>
+				</button>
+			</div>
+			<ion-item
+					class="{{selectRowBg(wItems.workItemTypeID)}} item item-complex" style = "border-bottom:2.5px solid #e8dcd0; border-top: 1px solid seashell;"
+					data-ng-if="wItems.projectID==projectID && !wItems.isHeader"
+					data-ng-click="showWorkItemUIButtons(wItems)"
+					bucketID="{{wItems.bucketID}}"
+					itemID="{{$index}}">
+
+				<div angular-marquee scroll="{{wItems.scroll}}"	duration="{{duration}}" style="width: 112%;height: 15px;">
+					<div class="row">
+						<div class="major-minor"
+							 data-ng-show="wItems.displayValue > 0">{{wItems.displayValue | number:1}}</div>
+						<div>&nbsp;{{wItems.name}}&nbsp;&nbsp;</div>
+                       <!--<span class="major-minor"
+						   data-ng-show="wItems.displayValue > 0">
+                        {{wItems.displayValue | number:1}}
+                      </span>
+					<span>
+                        {{wItems.name}}&nbsp;&nbsp;&nbsp;
+                     </span>-->
+				</div>
+
+				</div>
+
+				<br/>
+
+				<span data-ng-show="wItems.projectID>1 && wItems.showBlocked" class="blocked">
+					[blocked]
+				</span>
+				<span class="item-note" data-ng-show="wItems.projectID>1">
+
+                  ID:{{wItems.workItemVSOID}},
+                  Pri:{{wItems.workItemPriority}},
+                  State:{{wItems.workItemVSOState}}
+               </span>
+				<div class="button-bar buttonbarss"
+					 data-ng-show="wItems.workItemTypeID==7&&showWorkItemButtons==true && showWorkItemID==wItems.id && wItems.bucketID!=5">
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/add-task">
+						<i class="icon ion-plus"> </i>
+					</a>
+
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/photos">
+						<i class="icon ion-camera"> </i>
+					</a>
+					<a class="button button-clear button-dark"
+					   data-ng-if="wItems.projectID>1"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/assign">
+						<i class="icon ion-person-add"></i>
+					</a>
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/alarm">
+						<i class="{{wItems.workItemHasRepeatSchedule > 0?'projects':''}} icon ion-calendar"></i>
+					</a>
+					<a class="button button-clear button-dark" ng-click="editWorkItemById(wItems.id, wItems)">
+						<i class="icon ion-edit"></i>
+					</a>
+					<!--<a class="button button-clear button-dark"
+					   href="" ng-click="startimer1(wItems.workItemVSOID, wItems.projectID);">
+						<i class="icon ion-ios-clock-outline clockicn{{wItems.workItemVSOID}}"></i>
+						<i class="icon ion-pause pauseicon{{wItems.workItemVSOID}}" style="display:none;"></i>
+					</a>-->
+					<a class="button button-clear button-dark" ng-if="wItems.projectID > 1"
+					   href="javascript:void(0);" ng-click="hire(wItems.projectID, wItems.workItemVSOID, wItems.bucketID)">
+						<!--<i class="icon ion-ios-people"></i>-->
+						<img src="images/find.png" class="hire-icn">
+					</a>
+
+				</div>
+				<div class="button-bar"
+					 data-ng-show="wItems.workItemTypeID==5&&
+                  showWorkItemButtons==true&&showWorkItemID==wItems.id&&wItems.bucketID!=5"
+					 data-ng-click="$event.stopPropagation()">
+					<a class="button button-clear button-dark"
+					   data-ng-if="wItems.projectID>1"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/assign">
+						<i class="icon ion-person-add"></i>
+					</a>
+
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/photos">
+						<i class="icon ion-camera"></i>
+					</a>
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/alarm">
+						<i class="{{wItems.workItemHasRepeatSchedule > 0?'projects':''}} icon ion-calendar"></i>
+					</a>
+					<a class="button button-clear button-dark" ng-click="editWorkItemById(wItems.id, wItems)">
+						<i class="icon ion-edit"></i>
+					</a>
+					<a class="button button-clear button-dark startimer"
+					   href="javascript:void(0);" ng-click="startimer1(wItems.workItemVSOID, wItems.projectID);">
+						<i class="icon ion-ios-clock-outline clockicn{{wItems.workItemVSOID}}"></i>
+						<i class="icon ion-pause pauseicon{{wItems.workItemVSOID}}" style="display:none;"></i>
+
+					</a>
+
+
+				</div>
+
+
+				<!--mohit changes-->
+				<div class="button-bar"
+					 data-ng-show="wItems.workItemTypeID==1&&
+                  showWorkItemButtons==true&&showWorkItemID==wItems.id&&wItems.bucketID!=5"
+					 data-ng-click="$event.stopPropagation()">
+					<a class="button button-clear button-dark"
+					   data-ng-if="wItems.projectID>1"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/assign">
+						<i class="icon ion-person-add"></i>
+					</a>
+
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/photos">
+						<i class="icon ion-camera"></i>
+					</a>
+
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/alarm">
+						<i class="{{wItems.workItemHasRepeatSchedule > 0?'projects':''}} icon ion-calendar"></i>
+					</a>
+
+					<a class="button button-clear button-dark" ng-click="editWorkItemById(wItems.id, wItems)">
+						<i class="icon ion-edit"></i>
+					</a>
+
+					<a class="button button-clear button-dark startimer"
+					   href="javascript:void(0);" ng-click="startimer1(wItems.workItemVSOID, wItems.projectID);">
+						<i class="icon ion-ios-clock-outline clockicn{{wItems.workItemVSOID}}"></i>
+						<i class="icon ion-pause pauseicon{{wItems.workItemVSOID}}" style="display:none;"></i>
+					</a>
+
+				</div>
+				<!--mohit changes-->
+
+				<div class="button-bar"
+					 data-ng-if="showWorkItemButtons==true&&showWorkItemID==wItems.id&&wItems.bucketID==5"
+					 data-ng-click="$event.stopPropagation()">
+					<a class="button button-clear button-dark"
+					   href="#/tab/workitem/{{wItems.id}}/viewscope/triageDescription">
+						<i class="icon ion-eye"></i>
+					</a>
+
+				</div>
+				<!--
+				<ion-option-button class="button-assertive"
+								   data-ng-click="showConfirmationForRemove(wItems)"
+								   data-ng-if="wItemsbuckettitle !='Completed' && wItems.buckettitle !='Triage' && wItems.workItemTypeID != 1">
+					Remove
+				</ion-option-button>
+				-->
+				<ion-option-button class="button-assertive"
+								   data-ng-click="showConfirmationForRemove(wItems)"
+								   data-ng-if="wItemsbuckettitle !='Completed' && wItems.buckettitle !='Triage'">
+					Delete
+				</ion-option-button>
+
+
+				<ion-option-button class="button-positive"
+								   data-ng-click="markWorkItemAsClosed(wItems)"
+								   data-ng-if="wItems.buckettitle !='Completed' && wItems.buckettitle !='Triage'">
+					Close
+				</ion-option-button>
+
+				<ion-option-button class="button-calm"
+								   data-ng-click="moveTaskToTodayBucketFromSwipe(wItems)"
+								   data-ng-if="wItems.buckettitle !='Completed' && wItems.buckettitle !='Triage' && wItems.bucketID == 3">
+					MoveToToday
+				</ion-option-button>
+
+				<ion-option-button class="button-assertive"
+								   data-ng-click="deleteTriageWorkItem(wItems)"
+								   data-ng-if="wItems.buckettitle=='Triage'">
+					Remove
+				</ion-option-button>
+				<ion-option-button class="button-assertive"
+								   data-ng-click="markCompletedWorkItemAsClosed(wItems)"
+								   data-ng-if="wItems.buckettitle =='Completed'">
+					Hide
+				</ion-option-button>
+			</ion-item>
+		</div>
+	</ion-list>
+</div>
+
+<div class="list card homepage landscape-team-wrapper" id="landscape_team_wrapper" ng-if="!portraitMode">
+	<div class="row landscape-team-row">
+		<div class="member-collapse-click">
+			<span ng-click="show = false; collapseExpandAll(combinedTasks, show);" ng-show="show">
+					<i class = "icon icon ion-android-arrow-up"></i>
+				    Collapse All
+			</span>
+			<span ng-click="show = true; collapseExpandAll(combinedTasks, show);" ng-hide="show">
+					<i class = "icon icon ion-android-arrow-down"></i>
+					Expand All
+			</span>
+		</div>
+		<div>New</div>
+		<div>Active</div>
+		<div>Resolved</div>
+		<div>Closed</div>
+	</div>
+	<div class="row landscape-team-row {{mainUser.collapse ? 'collapsedrow' : ''}}" ng-repeat="mainUser in combinedTasks track by $index">
+		<div ng-click="collapseExpandUser(mainUser);" class="member-collapse-click">
+			<i class = "icon member-icon icon ion-arrow-{{mainUser.collapse ? 'right-b' : 'down-b' }}"></i>
+			<span class="card-user-name"><span>
+
+				<img ng-if="mainUser.name != 'Unassigned'" ng-src="{{mainUser.imageUrl}}">
+
+				<img  ng-if="mainUser.name == 'Unassigned'" ng-src="https://cdn.vsassets.io/v/20171217T033541/_content/notassigned-user.svg">
+
+			</span>
+				<span class="user-name" ng-if="mainUser.projectId != 1">{{mainUser.name}}</span>
+            	<span class="user-name" ng-if="mainUser.projectId == 1">Me</span>
+			</span></div>
+
+		<ul ng-show="mainUser.collapse" class="member-list-total">
+			<li ng-repeat="column in mainUser.columns" ng-if="column.name == 'New' && column.cards.length != 0">
+				{{column.cards.length}} not started
+			</li>
+			<li ng-repeat="column in mainUser.columns" ng-if="column.name == 'Active' && column.cards.length != 0">
+				{{column.cards.length}} in progress
+			</li>
+		</ul>
+
+		<div ng-hide="mainUser.collapse"  class="col-sm-{{12 / kanbanBoard.numberOfColumns}} col-xs-{{12 / kanbanBoard.numberOfColumns}}"
+			 ng-repeat="column in mainUser.columns"
+			 data-columnindex="{{$index}}" id="column{{$index}}">
+			<div class="column" ng-class="{drkbg: column.name == 'Resolved'}">
+				<ul class="cards card-list" as-sortable="kanbanSortOptions" data-ng-model="column.cards" ng-if="column.name != 'Resolved'">
+					<li class="card" ng-repeat="card in column.cards" ng-class="{ 'yellowbg': card.workItemTypeID == 5, 'bluebg': card.workItemTypeID == 7 , 'redbg': card.workItemTypeID == 1,}" as-sortable-item>
+						<div as-sortable-item-handle>
+							<p class="card-content">
+								<a on-tap="editWorkItemById(card.id)">
+									{{card.workItemVSOID}}
+								</a>
+								{{card.name}}</p>
+						</div>
+					</li>
+				</ul>
+				<ul class="cards card-list" as-sortable="kanbanSortOptionsResolved" data-ng-model="column.cards" ng-if="column.name == 'Resolved'">
+					<li class="card" ng-repeat="card in column.cards" as-sortable-item>
+						<div as-sortable-item-handle>
+							<p class="card-content">
+								<a on-tap="editWorkItemById(card.id)">
+									{{card.workItemVSOID}}
+								</a>
+								{{card.name}}</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+		
+		<ion-infinite-scroll
+				ng-if="loadMoreWorkItems"
+				immediate-check="false"
+				distance="30%"
+				icon="ion-loading-c"
+				on-infinite="loadMoreData()">
+		</ion-infinite-scroll>
+
+		<script id="reminder-remaining-hours-alert-template.html" type="text/ng-template">
+			<p ng-repeat="remind in reminders"> {{remind.line}} <span ng-repeat="link in remind.results"> <a href="#/tab/workitem/{{link.id}}/viewscope/edit-workitem" style="text-decoration: none;" ng-click="hidePopUp(link.id)"> {{link.workItemVSOID}},  </a> </span> </p>
+
+		</script>
+
+		<script id="reminder-today-tomorrow-alert-template.html" type="text/ng-template">
+			<p ng-repeat="remind in remindersForTodayAndTomorrow"> {{remind.line}} <span ng-repeat="link in remind.results"> <a href="" style="text-decoration: none;" ng-click="todayAndTomorrowAlert(link.id)"> {{link.workItemVSOID}},  </a> </span> </p>
+		</script>
+
+	</ion-content>
+</ion-view>

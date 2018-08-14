@@ -1,0 +1,150 @@
+<ion-view view-title="Teams" hide-nav-bar="false">
+	
+    <ion-nav-buttons side="side">
+      <button data-ng-click="refreshTeamMembers()" ng-show="vstsTeams" class="button icon ion-refresh button-positive">
+      </button>
+    </ion-nav-buttons>
+	
+	
+    <ion-content>
+		
+      	<div class="padd_top" data-ng-show="showSpinner">
+      		<ion-spinner icon="spiral" ></ion-spinner>
+      	</div>
+
+      	<div class="list card" data-ng-show="showVSTSMemberList" style="margin-bottom: 55px;">
+		        <ion-list show-delete="shouldShowDelete"
+		                  show-reorder="shouldShowReorder"
+		                  can-swipe="listCanSwipe" >
+
+                      <div data-ng-repeat="vstsTeam in vstsTeams track by $index"
+       						 >
+       						<ion-item class="item item-divider align_center"
+       								  data-ng-click="expandCollapseTeam(vstsTeam[0].projectID)" style="border-bottom: 1px solid #8080808c;margin-bottom: 1px">
+       							<span class="team_colappsed" > <i class="icon ion-chevron-down" data-ng-if="vstsTeam[0].collapsed == 'true'"> </i>   <i class="icon ion-minus-round" data-ng-if="vstsTeam[0].collapsed != 'true'"> </i> </span>
+								<div style="float: left">  {{vstsTeam[0].name}} </div>		
+								<a ng-if="subsActive" href="#/chatType/0/pID/{{vstsTeam[0].projectID}}/vstsPID/{{vstsTeam[0].vstsProjectID}}/memberID/0/title/{{vstsTeam[0].name}}" ng-click="expandCollapseTeam(vstsTeam[0].projectID)">
+									<i class="icon ion-chatbubbles" style="float:right;font-size: 32px;"></i>
+								</a>
+								<a ng-if="!subsActive" ng-click="subsPromt()">
+									<i class="icon ion-chatbubbles" style="float:right;font-size: 32px;"></i>
+								</a>
+
+								<div class="chatcounttop" style="top: 12px" ng-if="allCount[vstsTeam[0].vstsProjectID] > 0"></div>
+       						</ion-item>
+
+       						<ion-item class="item-avatar item-icon-right" style=";padding-bottom: 5px"
+       								  data-ng-repeat="vstsTeamMember in vstsTeamMembers | limitTo:numberOfTeamMembersToDisplay track by $index"
+       								  data-ng-if="vstsTeamMember.vstsTeamID==vstsTeam[0].vstsTeamID&&vstsTeamMember.projectID==vstsTeam[0].projectID"
+       								  data-ng-hide="vstsTeamMember.collapsed==='true'">
+       							<!--<img data-ng-src={{vstsTeamMember.imageUrl}} data-ng-click="showTeamScreenDetails(vstsTeamMember.uniqueName,vstsTeamMember.displayName,vstsTeamMember.projectID)">-->
+       							<img class="teamuserimg" data-ng-src="{{retImgUrl(vstsTeamMember.displayName, vstsTeamMember.imageUrl)}}" data-ng-click="showTeamScreenDetails(vstsTeamMember.uniqueName,vstsTeamMember.displayName,vstsTeamMember.projectID)">
+       							<h3 data-ng-click="showTeamScreenDetails(vstsTeamMember.uniqueName,vstsTeamMember.displayName,vstsTeamMember.projectID)">{{vstsTeamMember.displayName}}</h3>
+       							<p>
+       								    <span class="team-screen-today-count">
+       									  <!--Today&nbsp; <strong>{{vstsTeamMember.todayWorkItemCount}}</strong>-->
+       									  Today&nbsp; <strong>{{getCombineTodayTommorow(vstsTeam[0].vstsTeamID, vstsTeamMember.uniqueName, true)}}</strong>
+       								    </span>
+
+       								<span class="team-screen-tomorrow-count">
+       									  <!--Tomorrow &nbsp;<strong>{{vstsTeamMember.tomorrowWorkItemCount}}</strong>-->
+										Tomorrow &nbsp;<strong>{{getCombineTodayTommorow(vstsTeam[0].vstsTeamID, vstsTeamMember.uniqueName, false)}}</strong>
+       								    </span>
+
+       							</p>
+								<a ng-if="showIcon && subsActive" href="#/chatType/1/pID/{{vstsTeam[0].projectID}}/vstsPID/{{vstsTeam[0].vstsProjectID}}/memberID/{{vstsTeamMember.uniqueName}}/title/{{vstsTeamMember.displayName}}">
+									<i class="chatboxes icon ion-ios-chatbubble-outline"></i>
+								</a>
+								<a ng-if="showIcon && !subsActive" ng-click="subsPromt()">
+									<i class="chatboxes icon ion-ios-chatbubble-outline"></i>
+								</a>
+								<div ng-if="showIcon && allCount[vstsTeamMember.uniqueName + '-' + vstsTeamMember.vstsTeamID] > 0" class="chatcount"></div>
+
+								<div class="row" ng-class="{'checkDateTimebox': vstsTeamMember.uniqueName === vstsTeam[0].me}" style="padding: 0" ng-if="checkDateTime(vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) === 1"
+									 ng-click="showDateTimeModal(vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, vstsTeam[0].me, vstsTeam[0].vstsProjectID)">
+									<div class="wd" ng-class="{'wd-sel': checkDay(0, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) == true, 'wd-sel-today':checkDayAndOnline(0, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, todayVal, from, to) == true}">S</div>
+									<div class="wd" ng-class="{'wd-sel': checkDay(1, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) == true, 'wd-sel-today':checkDayAndOnline(1, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, todayVal, from, to) == true}">M</div>
+									<div class="wd" ng-class="{'wd-sel': checkDay(2, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) == true, 'wd-sel-today':checkDayAndOnline(2, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, todayVal, from, to) == true}">T</div>
+									<div class="wd" ng-class="{'wd-sel': checkDay(3, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) == true, 'wd-sel-today':checkDayAndOnline(3, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, todayVal, from, to) == true}">W</div>
+									<div class="wd" ng-class="{'wd-sel': checkDay(4, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) == true, 'wd-sel-today':checkDayAndOnline(4, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, todayVal, from, to) == true}">T</div>
+									<div class="wd" ng-class="{'wd-sel': checkDay(5, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) == true, 'wd-sel-today':checkDayAndOnline(5, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, todayVal, from, to) == true}">F</div>
+									<div class="wd" ng-class="{'wd-sel': checkDay(6, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) == true, 'wd-sel-today':checkDayAndOnline(6, vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, todayVal, from, to) == true}">S</div>
+									<div class="col wt" style="padding: 0">
+										<div class="row" style="padding: 0">
+											<!-- <div class="col-50" style="padding: 0">{{currentfromTime}}</div>
+											<!--<div class="col" style="padding: 0">-</div> -->
+											<div class="col-50" style="padding: 0">{{getTime('from', vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, todayVal)}}</div>
+										</div>
+										<div class="row" style="padding: 0">
+											<div class="col-50" style="padding: 0">{{getTime('to', vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, todayVal)}}</div>
+											<!--<div class="col-50" style="padding: 0">AM</div>
+											<div class="col-50" style="padding: 0">PM</div>-->
+										</div>
+									</div>
+								</div>
+								<div class="row" style="padding: 0;font-size: 12px" ng-click="showDateTimeModal(vstsTeam[0].fireMembers, vstsTeamMember.uniqueName, vstsTeam[0].me, vstsTeam[0].vstsProjectID)"
+									 ng-if="checkDateTime(vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) === 0 && vstsTeam[0].me == vstsTeamMember.uniqueName">
+									<u class="checkDateTimebox">Set your working date time</u>
+								</div>
+								<div class="row" style="padding: 0;font-size: 12px"
+									 ng-if="checkDateTime(vstsTeam[0].fireMembers, vstsTeamMember.uniqueName) === 0 && vstsTeam[0].me != vstsTeamMember.uniqueName">
+									<u>working date time not available</u>
+								</div>
+
+       						</ion-item>
+       					</div>
+
+       				        <!--<div data-ng-repeat="vstsTeam in vstsTeams | limitTo: 1 track by $index"
+                      ng-if="freeTrialVersionHasExpired == true && userSubscribed == false">
+       				        	<ion-item class="item item-divider align_center"
+       						     data-ng-click="expandCollapseTeam(vstsTeam[0].projectID)">
+       								{{vstsTeam[0].name}} {{vstsTeam[0].projectID}}
+       							</ion-item>
+
+       							<ion-item class="item-avatar"
+       							        data-ng-repeat="vstsTeamMember in vstsTeamMembers | limitTo:numberOfTeamMembersToDisplay track by $index"
+       							        data-ng-if="vstsTeamMember.vstsTeamID==vstsTeam[0].vstsTeamID&&vstsTeamMember.projectID==vstsTeam[0].projectID"
+       							        data-ng-hide="vstsTeamMember.collapsed==='true'"
+       							        data-ng-click="showTeamScreenDetails(vstsTeamMember.uniqueName,vstsTeamMember.displayName,vstsTeamMember.projectID)">
+       								<img data-ng-src={{vstsTeamMember.imageUrl}}>
+       								<h3>{{vstsTeamMember.displayName}}</h3>
+       								<p>
+       								    <span class="team-screen-today-count">
+       									  Today&nbsp; <strong>{{vstsTeamMember.todayWorkItemCount}}</strong>
+       								    </span>
+
+                                           <span class="team-screen-tomorrow-count">
+       									  Tomorrow &nbsp;<strong>{{vstsTeamMember.tomorrowWorkItemCount}}</strong>
+       								    </span>
+
+       								</p>
+       							</ion-item>
+       				        </div>-->
+
+		        </ion-list>
+
+        </div>
+        <ion-infinite-scroll
+				  ng-if="loadMoreTeamMembers"
+				  immediate-check="false"
+				  distance="30%"
+				  icon="ion-loading-c"
+				  on-infinite="loadMoreData()">
+		</ion-infinite-scroll>
+		
+		<div class="list list-inset" data-ng-hide="showSpinner">
+		  <div class="item item-text-wrap" data-ng-hide= "showVSTSMemberList">
+		  	<strong>No Team Project Found. <br> Please add one in 'Settings' > 'Project' > 'New Project Wizard' to view Team activity.</strong>
+		  </div>
+		</div>
+		
+    </ion-content>
+     <button id="hireBtn"
+		    class="button hire-team button-full button-positive"
+		    data-ng-click="showHireForm()"
+		    data-ng-show="true"
+		    data-ng-disabled="internetDisconnected">
+    	 Team Training
+    </button>
+
+</ion-view>

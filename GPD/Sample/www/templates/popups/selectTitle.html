@@ -1,0 +1,21 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-stable">
+        <button class="button icon-left button-clear" data-ng-click="hideModal()">
+            Close
+        </button>
+        <h1 class="title"></h1>
+        <button class="button button-clear" data-ng-click="done()">
+            Done
+        </button>
+    </ion-header-bar>
+    <ion-content>
+        <p style="margin: 20px 25px 20px;font-size: 16px;text-align: center;">{{modalTitle}}</p>
+        <ion-list>
+            <div class="item item-icon-right" ng-repeat="item in list" ng-click="select($index, item.selected)">
+                {{item.name}}
+                <i class="icon ion-checkmark-circled" ng-if="item.selected" style="color: green"></i>
+                <i class="icon ion-checkmark-circled" ng-if="!item.selected" style="color: #dad6d6"></i>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-modal-view>

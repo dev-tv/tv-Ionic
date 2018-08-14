@@ -1,0 +1,32 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Today And Tomorrow Items {{hellow}}</h1>
+	<button class="button button-clear" data-ng-click="closeTodayAndTomorrowAlertPopUpModel()">Close</button>
+  </ion-header-bar>
+  <ion-content>
+   
+      	<div class="list card">
+			<ion-list>
+			
+				<div data-ng-repeat="rem in remindersForTodayAndTomorrow track by $index" ng-init="outerIndex=$index">
+					<ion-item class="item item-divider align_center">						   
+						{{rem.project_name}}
+					</ion-item>
+							
+					<ion-item data-ng-repeat="link in rem.results track by $index">
+						<p><a href="" style="text-decoration: none;" ng-click=""> {{link.name}}-{{link.workItemVSOID}} </a>							
+						 <span class="badge badge-stable">
+						 <button class = "button button-small button-positive adjust_import_but" data-ng-click="moveTaskToTodayFromTodayList(link, outerIndex, $index)" > MoveToToday </button>
+							
+						</span>
+					</ion-item>		
+				</div>
+
+			 </ion-list>
+		</div>	
+  </ion-content>
+</ion-modal-view>
+
+
+
+								

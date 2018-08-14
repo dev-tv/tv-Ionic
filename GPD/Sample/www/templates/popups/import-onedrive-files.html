@@ -1,0 +1,33 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Import Files</h1>
+	 <button class="button button-clear" data-ng-click="closeOneDriveFilesModel()">
+      	Close
+    </button> 
+  </ion-header-bar>
+  <ion-content>
+   
+      	<div class="list card" >
+			<ion-list show-delete="false"
+          can-swipe="true">
+			
+				<div data-ng-repeat="file in list_files.data track by $index">							
+					<ion-item>
+						 <h2> {{file.name}} </h2> 
+						 <span class="badge badge-stable">
+						 <button class = "button button-small button-positive adjust_import_but" ng-click="ImportMeFromOneDrive(file,list_files.token)"> Import </button>
+							
+						</span> 	
+					
+					<ion-option-button class="button-assertive" 
+						data-ng-click="showConfirmationForRemoveOneDriveFile(file, list_files.token ,$index)">
+						Remove
+					</ion-option-button>	
+					</ion-item>	
+					
+				</div>
+
+			 </ion-list>
+		</div>	
+  </ion-content>
+</ion-modal-view>

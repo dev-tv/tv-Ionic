@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-navbar class="toolbar-ios" hideBackButton="true">
+    <img tappable style="margin-left: 2vw" (click)="toggleMenu()" class="icon menu" width="30vw" height="30vw" src="assets/icon/burger.svg" />
+    <ion-title class="text-lighter text-center">
+      <span *ngIf="state == states.none || state == states.recordingStoped || state == states.paused">Record</span>
+      <span *ngIf="state == states.recordingStarted">Recording...</span>
+      <span *ngIf="state == states.playing">Playing...</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="no-scroll">
+  <track-visualizator #trackVisualizator [ngStyle]="{'visibility': state == states.none ? 'collapse' : 'visible'}"></track-visualizator>
+  <div class="track-time text-lighter">{{record?.State?.CurrentTime | trackTime}}</div>
+  <ion-grid class="record-controls controls">
+    <ion-row>
+      <ion-col class="text-right" width-33>
+        <button class="button-round button-size-2" *ngIf="state == states.recordingStoped || state == states.recordingStarted || state == states.paused" [disabled]="state != states.recordingStoped && state != states.paused" (click)="play()" ion-button clear small><ion-icon name="ios-play-outline"></ion-icon></button>
+        <button class="button-round button-size-2" *ngIf="state == states.playing" (click)="pause()" ion-button clear small><ion-icon name="ios-pause"></ion-icon></button>
+      </ion-col>
+      <ion-col class="text-center" width-33>
+        <button class="record-button button-round button-size-1" *ngIf="state == states.none || state == states.recordingStoped || state == states.paused || state == states.playing" [disabled]="state == states.playing" (click)="startRecord()" ion-button clear small><ion-icon name="ios-mic-outline"></ion-icon></button>
+        <button class="button-round button-size-1" *ngIf="state == states.recordingStarted" (click)="stopRecord()" ion-button clear small><ion-icon name="ios-square-outline"></ion-icon></button>
+      </ion-col>
+      <ion-col width-33>
+        <button class="button-text" *ngIf="state == states.recordingStarted || state == states.playing" (click)="done()" ion-button clear small>Done</button>
+        <button class="button-text" *ngIf="state == states.recordingStoped || state == states.paused" (click)="save()" ion-button clear small>Save</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

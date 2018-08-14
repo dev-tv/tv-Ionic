@@ -1,0 +1,59 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <button class="button icon-left button-clear" data-ng-click="closeRepeatThroughPopup()">
+      Cancel
+    </button>
+    <h1 class="title">Repeat Through</h1>
+    <button class="button button-clear" data-ng-click="saveRepeatThroughSchedule()">
+      Done
+    </button>
+  </ion-header-bar>
+  <ion-content class="padding">
+    <!--     <div class="row">
+           <br>
+          <br>
+         <ion-checkbox ng-model="schedule.repeatForeverIsSet"
+                            ng-change="repeatThroughForever()">Repeat Forever</ion-checkbox>
+          <br>
+        </div>  -->
+
+    <!--<div class="item item-toggle">Repeat Forever
+      <label class="toggle toggle-balanced">
+        <input type="checkbox" data-ng-model="notification_recv" ng-change="repeatThroughForever(notification_recv);"
+               checked>
+        <div class="track">
+          <div class="handle"></div>
+        </div>
+      </label>
+    </div>-->
+
+
+    <button class="button icon-left ion-calendar button-block button-positive" id="repeatforevr"
+            data-ng-click="pickRepeatThroughDate();" style="display:none;">
+      Choose date for forever
+    </button>
+
+
+    <div class="row">
+      <button class="button button-block button-positive col-60" ng-click="pickRepeatThroughDate();">
+        Set End Date
+      </button>
+      <button class="button button-block icon-left ion-refresh button-positive button-outline"
+              style="margin-left: 10px" ng-click="resetRepeatThrough()">Reset
+      </button>
+    </div>
+
+    <div class="row">
+      <br>
+      <br>
+      <div class="col text-center">
+        <!--if end date set-->
+        <h4 ng-if="repeatThroughScheduleSetForWorkItem == 'true'">{{repeatThroughDateTodayFormatted}}</h4>
+        <!--if end date is not set-->
+        <h4 ng-if="repeatThroughScheduleSetForWorkItem !== 'true'">Work item will repeat forever</h4>
+      </div>
+    </div>
+
+
+  </ion-content>
+</ion-modal-view>

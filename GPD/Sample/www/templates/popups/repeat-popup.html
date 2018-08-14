@@ -1,0 +1,217 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <button class="button icon-left button-clear" data-ng-click="closeRepeatPopup()"> 
+    	Cancel
+    </button>
+    <h1 class="title">Repeat</h1>   
+    <button class="button button-clear" data-ng-click="saveRepeatSchedule()">
+    Done
+    </button>    
+  </ion-header-bar>
+  <ion-content class="padding checkboxreapeat">
+        
+        <div class="row">
+		<!--  <div class="col text-center">
+		    <ion-checkbox ng-model="schedule.repeatIsSet" 
+				                ng-show="schedule.repeatIsSet"
+				                ng-change="turnRepeatOff()">Turn Repeat Off</ion-checkbox>
+		   </div> -->
+	          <div class="tabssystem">
+			  <span class="cover-border">
+
+				<a href="javascript:void(0);" class="tabactiv" id="repeatweek"
+				   ng-class="{ 'active': showWeekDays == true}"
+				   ng-click="showWeekDaysData();">Week</a>
+
+		        <a href="javascript:void(0);" class="tabactiv" id="repeatmonthly"
+				   ng-class="{ 'active': showMonths == true}"
+				   ng-click="showMonthsData();">Monthly</a>
+			</span>
+		 </div>
+	    </div>   
+	    <div class="row" > 
+		
+		
+		</div>
+	  <div class="row" id="monthmonthmessage" ng-if="showWeekDays == true">
+		  <p>
+			  Work item will repeat on
+			  <span ng-if="schedule.day.monday == true">Monday</span>
+			  <span ng-if="schedule.day.tuesday == true">Tuesday</span>
+			  <span ng-if="schedule.day.wednesday == true">Wednesday</span>
+			  <span ng-if="schedule.day.thursday == true">Thursday</span>
+			  <span ng-if="schedule.day.friday == true">Friday</span>
+			  <span ng-if="schedule.day.saturday == true">Saturday</span>
+			  <span ng-if="schedule.day.sunday == true">Sunday</span>
+
+			  <span ng-if="(schedule.day.monday == true || schedule.day.tuesday == true
+				  || schedule.day.wednesday == true || schedule.day.thursday == true
+				  || schedule.day.friday == true || schedule.day.saturday == true || schedule.day.saturday == sunday)
+				  && (schedule.monthday.one == true || schedule.monthday.two == true ||
+				  schedule.monthday.three == true || schedule.monthday.four == true)">,</span>
+
+			  <span ng-if="schedule.monthday.one == true">1st</span>
+			  <span ng-if="schedule.monthday.two == true">2nd</span>
+			  <span ng-if="schedule.monthday.three == true">3rd</span>
+			  <span ng-if="schedule.monthday.four == true">4th</span>
+
+			  <span ng-if="schedule.monthday.one == true || schedule.monthday.two == true ||
+				  schedule.monthday.three == true || schedule.monthday.four == true">Week.</span>
+
+		  </p>
+	  </div>
+	  <div class="row tabsmain" id="weeks" ng-if="showWeekDays == true">
+			
+			<div class="col col-50">
+			<span class="repeatheading">Days</span>
+			  	<ion-list>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.day.monday" ng-change="scheduleDaySelected('Monday')">
+				  Monday
+				  </ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.day.tuesday" ng-change="scheduleDaySelected('Tuesday')">
+				  Tuesday</ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.day.wednesday" ng-change="scheduleDaySelected('Wednesday')">
+				  Wednesday</ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.day.thursday" ng-change="scheduleDaySelected('Thursday')">
+				  Thursday</ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.day.friday" ng-change="scheduleDaySelected('Friday')">
+				  Friday</ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.day.saturday" ng-change="scheduleDaySelected('Saturday')">
+				  Saturday</ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.day.sunday" ng-change="scheduleDaySelected('Sunday')">
+				  Sunday</ion-checkbox>					  		  
+				</ion-list>
+			</div>
+			
+			<div class="col col-50">
+			<span class="repeatheading">Weeks</span>
+				<!-- Repeat on every – {{repeatScheduleMonthDates}}  -->
+			  	<ion-list>
+
+				  <ion-checkbox ng-model="schedule.monthday.one"  ng-change="scheduleMonthDaySelected('One')">
+				  	1st Week
+				  </ion-checkbox>
+				  <ion-checkbox ng-model="schedule.monthday.two" ng-change="scheduleMonthDaySelected('Two')">
+				  	2nd Week
+				  </ion-checkbox>
+
+				  <ion-checkbox ng-model="schedule.monthday.three"  ng-change="scheduleMonthDaySelected('Three')">
+				  	3rd Week
+				  </ion-checkbox>
+				  <ion-checkbox ng-model="schedule.monthday.four"  ng-change="scheduleMonthDaySelected('Four')">
+				  	4th Week
+				  </ion-checkbox>
+                    
+				</ion-list>
+			</div>
+		</div>
+
+	  <div class="row" id="monthmessagely" ng-if="showMonths == true">
+		  <p>Work item will repeat
+
+			  <span ng-if="schedule.datesvalues == 'undefined' || schedule.datesvalues == ''">in</span>
+			  <span ng-if="schedule.datesvalues != 'undefined' && schedule.datesvalues != ''">on</span>
+
+			  <span ng-if="schedule.datesvalues != 'undefined'">{{schedule.datesvalues}}</span>
+			  <span ng-if="schedule.monthnameSelected.january == true">January</span>
+			  <span ng-if="schedule.monthnameSelected.february == true">February</span>
+			  <span ng-if="schedule.monthnameSelected.march == true">March</span>
+			  <span ng-if="schedule.monthnameSelected.april == true">April</span>
+			  <span ng-if="schedule.monthnameSelected.may == true">May</span>
+			  <span ng-if="schedule.monthnameSelected.june == true">June</span>
+			  <span ng-if="schedule.monthnameSelected.july == true">July</span>
+			  <span ng-if="schedule.monthnameSelected.august == true">August</span>
+			  <span ng-if="schedule.monthnameSelected.september == true">September</span>
+			  <span ng-if="schedule.monthnameSelected.october == true">October</span>
+			  <span ng-if="schedule.monthnameSelected.november == true">November</span>
+			  <span ng-if="schedule.monthnameSelected.december == true">December</span>
+		  </p>
+	  </div>
+	  <div class="row tabsmain" id="monthly"  ng-if="showMonths == true">
+		<div class="col col-50">
+			<span class="repeatheading">Month</span>
+			  	<ion-list>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.january" ng-change="schedulemonthnameSelected('January')">
+				 January
+				  </ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.february" ng-change="schedulemonthnameSelected('February')">
+				  February
+				  </ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.march" ng-change="schedulemonthnameSelected('March')">
+				  March
+				  </ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.april" ng-change="schedulemonthnameSelected('April')">
+				  April
+				  </ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.may" ng-change="schedulemonthnameSelected('May')">
+				  May</ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.june" ng-change="schedulemonthnameSelected('June')">
+				  June</ion-checkbox>
+				  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.july" ng-change="schedulemonthnameSelected('July')">
+				  July</ion-checkbox>		
+
+                  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.august" ng-change="schedulemonthnameSelected('August')">
+				  August</ion-checkbox>
+
+                  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.september" ng-change="schedulemonthnameSelected('September')">
+				  September</ion-checkbox>
+				  
+				   <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.october" ng-change="schedulemonthnameSelected('October')">
+				  October</ion-checkbox>
+                  
+				  <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.november" ng-change="schedulemonthnameSelected('November')">
+				  November</ion-checkbox>
+				    <ion-checkbox class="colored-icn" ng-model="schedule.monthnameSelected.december" ng-change="schedulemonthnameSelected('December')">
+				  December</ion-checkbox>
+				</ion-list>
+			</div>
+		<div class="col col-50">
+			<span class="repeatheading">Date</span>
+			<label class = "item item-input item-select">
+			<div class = "input-label">
+			</div>
+			<select  ng-model="schedule.datesvalues" id="dropdown" ng-change="update(schedule.datesvalues);" data-ng-disabled="!schedule.monthnameSelected.january && !schedule.monthnameSelected.february
+			 && !schedule.monthnameSelected.march && !schedule.monthnameSelected.april
+			 && !schedule.monthnameSelected.may && !schedule.monthnameSelected.june
+			 && !schedule.monthnameSelected.july && !schedule.monthnameSelected.august
+			 && !schedule.monthnameSelected.september && !schedule.monthnameSelected.october
+			 && !schedule.monthnameSelected.november && !schedule.monthnameSelected.december">
+	<option value="">Select your date</option>
+      <option value="1">1</option>
+       <option value="2">2</option>
+      <option value="3">3</option>
+	  <option value="4">4</option>
+	  <option value="5">5</option>
+	   <option value="6">6</option>
+	    <option value="7">7</option>
+	   <option value="8">8</option>
+	   <option value="9">9</option>
+	   <option value="10">10</option>
+	   <option value="11">11</option>
+	  <option value="12">12</option>
+	  <option value="13">13</option>
+	  <option value="14">14</option>
+	  <option value="15">15</option>
+	  <option value="16">16</option>
+       <option value="17">17</option>
+      <option value="18">18</option>
+	  <option value="19">19</option>
+	  <option value="20">20</option>
+	  <option value="21">21</option>
+	   <option value="22">22</option>
+	   <option value="23">23</option>
+	   <option value="24">24</option>
+	   <option value="25">25</option>
+	   <option value="26">26</option>
+	  <option value="27">27</option>
+	  <option value="28">28</option>
+	  <option value="29">29</option>
+	  <option value="30">30</option>
+	 <option value="31">31</option>
+   </select>
+</label>
+</div>
+</div>   
+		
+  </ion-content>
+</ion-modal-view>

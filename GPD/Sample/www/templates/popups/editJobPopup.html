@@ -1,0 +1,107 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title">Edit</h1>
+        <div class="buttons">
+            <button class="button button-clear" data-ng-click="hideEditModal()">Close</button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <div class="adddetails card" style="overflow: visible;">
+            <form name="detailLancerform" novalidat>
+                <div class="topimg">
+                    <img src="images/hand.png" style="width: 40px">
+                </div>
+                <form>
+                    <div class="item" style="overflow: visible;">
+                        <b style="margin-left: 10px;margin-top: 10px;font-size: 18px;">What service are you looking
+                            for?</b>
+                        <div class="choosetitle">
+                            <div class="row">
+                                <p ng-click="showModal('title')"><u>Choose service</u></p>
+                            </div>
+                            <div class="row">
+                                <textarea rows="1" class="title-area"
+                                          ng-keyup="getAutoSuggestion(selTitle.txt, 'auto_job_titles')"
+                                          ng-blur="clearTitle()" ng-model="selTitle.txt"
+                                          placeholder="i.e. Mobile Development" data-ng-required="true"></textarea>
+                            </div>
+                            <ul class="list-group" style="margin-bottom: 10px">
+                                <li class="list-group-item" ng-repeat="txtdata in filterTitle track by $index"
+                                    ng-click="fillTextbox(txtdata.name, 'auto_job_titles')">{{txtdata.name}}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <b style="margin-left: 10px;margin-top: 10px;font-size: 18px;">What is the deliverable?</b>
+                        <div class="item choosetitle">
+                            <div class="row">
+                                <p ng-click="showModal('type')"><u>Choose deliverable</u></p>
+                            </div>
+                            <div class="row">
+                                <textarea rows="1" class="title-area"
+                                          ng-keyup="getAutoSuggestion(selType.txt, 'auto_job_types')"
+                                          ng-blur="clearSuggestion()" ng-model="selType.txt"
+                                          placeholder="i.e. A mobile web app" data-ng-required="true"></textarea>
+                            </div>
+                            <ul class="list-group" style="margin-bottom: 10px">
+                                <li class="list-group-item" ng-repeat="txtdata in filterTxt track by $index"
+                                    ng-click="fillTextbox(txtdata.name, 'auto_job_types')">{{txtdata.name}}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <b style="margin-left: 10px;font-size: 18px;">Describe the deliverable</b>
+                        <div class="item textareabox" style="margin-top: 10px">
+                            <textarea rows="5" ng-model="project.description" data-ng-required="true"
+                                      placeholder="i.e. Team planner app that enables global teams to collaborate and track shared work items for iOS and Android."></textarea>
+                        </div>
+
+                        <div class="row otherrow">
+                            <b>Max Budget ($)</b>
+                            <b>Bidding Days</b>
+                        </div>
+                        <div class="row">
+                            <div class="col col-50">
+                                <div class="row">
+                                    <button class="button button-clear"></button>
+                                    <input class="budget-input" ng-blur="checkGreaterValue()" type="number"
+                                           ng-model="project.custom_range.max_amount" data-ng-required="true">
+                                </div>
+                            </div>
+                            <div class="col col-50">
+                                <div class="row">
+                                    <button class="button button-clear calender"></button>
+                                    <input class="budget-input" type="number" ng-model="project.biddingDays"
+                                           data-ng-required="true"></input>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row margintop10">
+                            <b>Skills</b>
+                            <p ng-click="showModal('skill')"><u>Choose skills</u></p>
+                        </div>
+                        <div class="row">
+                            <button class="button button-clear mockup"
+                                    style="background-image: url('images/mockup.png');"></button>
+                            <tags-input placeholder="i.e. AngularJS, Node.js" ng-model="selSkill.txt"
+                                        style="width: 100%" data-ng-required="true">
+                                <auto-complete source="loadTags($query, 'auto_job_skills')"></auto-complete>
+                            </tags-input>
+                        </div>
+                    </div>
+                </form>
+                <div class="uploadimg">
+                    <div class="row margintop10" style="margin-bottom: 10%">
+                        <div class="bottombtn">
+                            <!-- ng-click="goBids('save')" -->
+                            <button data-ng-disabled="detailLancerform.$invalid"
+                                    type="submit" class="button button-dark col-40" ng-click="updatePostedJob()">
+                                <b>Update</b></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </ion-content>
+</ion-modal-view>

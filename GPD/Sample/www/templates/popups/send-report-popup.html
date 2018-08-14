@@ -1,0 +1,105 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title"> Email Report</h1>
+    <div class="buttons">
+      <button class="button button-clear" data-ng-click="closeEmailReportModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content class="padding" overflow-scroll="false">
+    <form name="form" novalidate data-ng-if="emailConfig.hideReportForm == true">
+		<label class="item item-input item-select">
+			<div class="input-label">
+			  Select Project <small>*</small>
+			</div>
+			<select data-ng-model="projectToMail" data-ng-required="true" data-ng-change="selectProjectToMail(projectToMail)">
+			  <option value="" selected="selected">Select</option>
+			  <option data-ng-repeat="proj in allVSProjects" value="{{proj}}" >{{proj.areaPathNodeName}}-{{proj.iteration_path}}</option>
+			</select>
+		</label>
+	
+		<div data-ng-repeat="item in emailReportTypes" data-ng-show="projectToMail">
+            <ion-checkbox data-ng-model="item.Selected" >{{item.label}}</ion-checkbox>  
+        </div>
+		
+        <label class="item">
+          <button data-ng-disabled="form.$invalid || (!emailReportTypes[0].Selected && !emailReportTypes[1].Selected && !emailReportTypes[2].Selected && !emailReportTypes[3].Selected &&  !emailReportTypes[4].Selected &&  !emailReportTypes[5].Selected)" class="button button-block button-positive" type="submit" data-ng-click="BuildAndEditReport()"> Build & Edit </button>
+        </label>
+
+    </form>
+	
+		<button  class="button button-block button-positive" type="button" data-ng-if="emailConfig.showEmailBtn == true" data-ng-click="createpdf()">Attach & Send</button>
+	     <ion-list>
+			<label class="item item-input item-stacked-label" data-ng-if= "emailConfig.showEmailBtn == true">
+				<span class="input-label"> Introductory Note </span>
+			    <textarea ng-model="note.IntroductoryNote" placeholder="add Introductory note here"> </textarea>
+           </label>
+		 
+			<!-- BurnDown chart -->
+			<label class="item item-input" data-ng-if="googleburnDownObjRep.data.rows.length">
+				  <span class="input-label">BurnDown Note:<small>*</small></span>
+				  <input type="text" data-ng-model="note.burnDownNote" placeholder="i.e.Add BurnDown Report note here">
+			</label>
+			<div google-chart chart="googleburnDownObjRep" data-ng-if="googleburnDownObjRep.data.rows.length" style="height:450px;margin-top:5px; width:100vx" agc-on-ready="initBurnDown(chartWrapper)"></div>
+		
+			<!-- for All bullets Features !-->
+			<label class="item item-input" data-ng-if="allFeaturesRep.length">
+				  <span class="input-label">Feature Note:<small>*</small></span>
+				  <input type="text" data-ng-model="note.featureNote" placeholder="i.e.Add Feature Progress note here">
+			</label>
+			<div google-chart chart="obj" data-ng-if="obj.data.rows.length" style="height:80px; margin-top:5px;" ng-repeat="obj in allFeaturesRep" agc-on-ready="initAllFeatureImgs(chartWrapper)" ></div> 
+
+			
+			<label class="item item-input" data-ng-show="vstsTeamMembersRep[0]">
+				<span class="input-label">Leaderboard Note:<small>*</small></span>
+				<input type="text" data-ng-model="note.leaderboardNote" placeholder="i.e.Add LeaderBoard note here">
+			</label>
+			 <div class="list card" data-ng-show="vstsTeamMembersRep[0]" >
+				    
+			     <ion-item class="item-avatar"
+					  data-ng-repeat="vstsTeamMember in vstsTeamMembersRep track by $index"
+					  get-percentage=" {{vstsTeamMember.closedWorkItemsCount}}">       
+				   <img data-ng-src={{vstsTeamMember.imageUrl}}>             
+				  <h3>{{vstsTeamMember.displayName}}</h3>
+				  <span class="badge badge-stable">
+					{{vstsTeamMember.closedWorkItemsCount}}
+			 	 </span>      
+			  </ion-item>     
+				  
+			</div>
+			
+			<!-- bullet chart for current sprint !-->
+			<label class="item item-input" data-ng-if="currentBulletsRep.length">
+			    <span class="input-label">{{crnt_sprint}} Stories Note:<small>*</small></span>
+			    <input type="text" data-ng-model="note.currentBulletNote" placeholder="i.e.Add Current sprint note">
+			</label>
+			<div google-chart chart="obj" data-ng-if="obj.data.rows.length" style="height:90px; margin-top:5px;" ng-repeat="obj in currentBulletsRep" agc-on-ready="initCurrentBulletImgs(chartWrapper)"></div> 
+			<!-- for All bullets !-->
+			<label class="item item-input" data-ng-if="allBulletsRep.length">
+				  <span class="input-label">All Stories Note:<small>*</small></span>
+				  <input type="text" data-ng-model="note.allBulletNote" placeholder="i.e.Story Progress of all stories">
+			</label>
+			<div google-chart chart="obj" data-ng-if="obj.data.rows.length" style="height:80px; margin-top:5px;" ng-repeat="obj in allBulletsRep" agc-on-ready="initAllBulletImgs(chartWrapper)" ></div> 
+		
+			<label class="item item-input" data-ng-show="TeamImagesRep[0]">
+				<span class="input-label">Teams Note:<small>*</small></span>
+				<input type="text" data-ng-model="note.teamNote" placeholder="i.e.Add Teams note here">
+			</label>
+			<div class="list card" data-ng-show="TeamImagesRep[0]">
+				   <ion-item class="item-avatar"
+						  data-ng-repeat="vstsTeamMember in TeamImagesRep track by $index">       
+					<img data-ng-src={{vstsTeamMember.imageUrl}}>             
+					<h3>{{vstsTeamMember.displayName}}</h3>
+				  </ion-item>      
+				  
+			</div>
+			
+			<label class="item item-input item-stacked-label" data-ng-if= "emailConfig.showEmailBtn == true">
+				<span class="input-label">Ending Note </span>
+				 <textarea ng-model="note.endingNote" placeholder="add Ending  note here"></textarea>
+           </label>
+		</ion-list>
+	
+	 
+	
+  </ion-content>
+</ion-modal-view>

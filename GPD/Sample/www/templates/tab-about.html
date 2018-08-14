@@ -1,0 +1,49 @@
+<ion-view view-title={{title}} can-swipe-back="false" hide-nav-bar="false">
+  <ion-content class="padding">
+   <div class="about">
+   <p class="head"> GoPlanDo, Version {{appVersion}} </p>
+   <p class="head"> &copy; AIVANTECH LLC, All rights reserved </p>
+  
+       <div class="row horizontal">
+
+			<fieldset>           
+				<button  
+				class="button icon-left ion-help button-block button-outline button-calm privacy"
+				data-ng-click="composeEmail()">Help</button>
+				<button  
+				class="button icon-left ion-videocamera button-block button-outline button-positive privacy" 
+				data-ng-click="openToursPage()">Welcome Videos</button>
+			 </fieldset>
+		</div>
+	
+		<div class="row horizontal">
+		   <fieldset>
+         
+			 
+				<button 
+				class="button icon-left ion-ios-information-outline  button-block button-outline button-dark privacy" 
+				data-ng-click="openTerms()"> Terms of Use </button>
+			  
+				<button 
+				 class="button icon-left ion-lock-combination button-block button-outline button-dark privacy" 
+				 data-ng-click="openPrivacy()"> Privacy Policy </button>
+			    
+			 </fieldset>
+		</div>
+		
+		<div class="row horizontal" data-ng-show="false">
+
+			<fieldset>
+           
+				<button  
+				class="button icon-left ion-share button-block button-outline button-positive privacy" 
+				data-ng-click="shareGeneral()"
+				> Social Sharing </button>
+			   </fieldset>
+		</div>	
+		
+	
+	</div>	
+  </ion-content>
+</ion-view>
+

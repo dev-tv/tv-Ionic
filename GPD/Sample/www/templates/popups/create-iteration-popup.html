@@ -1,0 +1,61 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <button class="button button-clear" data-ng-show="false"  data-ng-click="showHelp('Creating New Sprint')"> 
+    	Help?
+    </button>
+    <h1 class="title">Create New Sprint</h1>
+    <button class="button button-clear" data-ng-click="closeCreateIterationModal()">Close</button>
+  </ion-header-bar>
+  <ion-content class="padding">
+   
+		<form name="createIterationForm" novalidate>	
+			
+			<label class="item item-input item-select">
+				<div class="input-label">Select project
+				
+				<select data-ng-model="vstsIteration.project"
+					    data-ng-options="vstsProject as vstsProject.areaPathNodeName for vstsProject in vstsProjects">
+					<option value="" selected>Select Project</option>
+				</select>
+
+				</div>
+			</label>
+			
+			<div data-ng-show="vstsIteration.project">
+				<label class="item item-input">
+					<span class="input-label">Sprint Name  <small>*</small></span>
+					<input data-ng-required="true" 
+					       type="text" 
+					       data-ng-model="vstsIteration.iterationName" 
+					       placeholder="i.e iteration 1">
+				</label>
+			
+				<label class="item item-input">
+					<span class="input-label">Start Date  <small>*</small></span>
+					 <input data-ng-required="true" type="text" 
+					        data-ng-model="vstsIteration.startDate" 
+					        placeholder="Start date"       
+					        data-ng-click="openIterationDatePicker('Start')" /> 
+					
+				</label>	
+			 
+				<label class="item item-input">
+					<span class="input-label">Finish Date  <small>*</small></span>
+					 <input data-ng-required="true" type="text" 
+					        data-ng-model="vstsIteration.finishDate" 
+					        placeholder="Finish date"       
+					        data-ng-click="openIterationDatePicker('Finish')" /> 
+					
+				</label>	
+			
+				<label class="item">
+					<button data-ng-disabled="createIterationForm.$invalid" 
+					class="button button-block button-positive" 
+					data-ng-click="createVSTSIteration()">Create Sprint</button>
+				</label>
+			</div>
+		</form>	
+	 
+    
+  </ion-content>
+</ion-modal-view>

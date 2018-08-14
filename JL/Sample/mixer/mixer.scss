@@ -1,0 +1,126 @@
+page-mixer {
+    ion-slides {
+        height: auto;
+
+        .swiper-slide img {
+            /*width: 102px;*/
+            width: 18vh;
+            border-radius: 6%;
+            margin: 13px 0;
+            opacity: 0.5;
+        }
+
+        .swiper-slide.swiper-slide-active img {
+            /*width: 135px;*/
+            width: 23vh;
+            box-shadow: 0 0 10px #22242d;
+            opacity: 1;
+            margin: 0;
+        }
+
+        h5 {
+            display: none;
+        }
+
+        .swiper-slide.swiper-slide-active h5 {
+            display: block !important;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+    }
+
+    ion-col {
+        padding: 0 !important;
+    }
+
+  .mixer-two-lines-ed {
+    height: 2.0em;
+    font-size: 0.9em;
+    overflow: hidden;
+  }
+
+    .track-play-button {
+        height: 60px;
+        width: 60px;
+    }
+
+    .track-save {
+        top: 10px;
+        color: #00aabd;
+    }
+
+    .volume-bar-label {
+        font-size: 12px;
+    }
+
+    .volume-bar-row {
+        position: relative;
+
+        ion-range.volume-bar {
+            width: 100%;
+            padding: 0px;
+            margin-top: -14px;
+
+            .range-knob {
+                border: none !important;
+                background: #fff !important;
+            }
+
+            .range-knob-handle {
+                z-index: 1;
+            }
+
+            .range-bar.range-bar-active {
+                display: none;
+            }
+        }
+
+      .range-md.range-disabled .range-knob{
+        outline: 0px;
+      }
+
+        .second-volume-bar {
+            @include progress-bar-indicator-style();
+
+            display: block;
+            width: auto;
+            height: 5px;
+
+            position: absolute;
+            top: 5px;
+
+            &.inverse {
+                transform: rotate(180deg);
+            }
+        }
+    }
+  .item-inner{
+    padding-right: 0px !important;
+  }
+  .mix-track-menu{
+    padding: 0px;
+    width: 8%;
+    margin: 0px !important;
+  }
+
+  .rotate {
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+  }
+
+
+  .ion-ios-play:before{
+    font-size: 2.0em;
+    margin-left: 5px;
+  }
+
+  .ion-ios-pause:before{
+    font-size: 1.6em;
+  }
+
+  .item-ios.item-block .item-inner{
+    border-bottom: 0.7px solid #c8c7cc;
+  }
+
+}

@@ -1,0 +1,17 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Notifications Log</h1>
+  </ion-header-bar>
+  <ion-content class="padding">
+      <p>
+  
+      </p>
+	  <p ng-repeat="item in notificationsItems">Project Name: {{item.title}} <br/> <strong> {{item.message}} </strong> </p>
+
+         
+      <button  class="button button-block button-positive" 
+                 data-ng-click="notificationsIntroModalHide()">
+              <strong> Got it </strong>
+      </button> 
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,12 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">{{workItemObj.name}}</h1>
+    <div class="buttons">
+      <button class="button button-clear" data-ng-click="closeDescModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content  overflow-scroll="true">
+    <ng-quill-editor style="min-height:200px; display:block" class="selectable rselectable" ng-model="descModalView" read-only="true" required="true" max-length="30"
+                     modules="{toolbar: []}" ></ng-quill-editor>
+  </ion-content>
+</ion-modal-view>

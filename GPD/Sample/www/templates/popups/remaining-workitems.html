@@ -1,0 +1,25 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Add Estimates {{hellow}}</h1>
+	<button class="button button-clear" data-ng-click="closeRemainingWorkItemsModel()">Close</button>
+  </ion-header-bar>
+  <ion-content>
+   
+      	<div class="list card">
+			<ion-list>
+			
+				<div data-ng-repeat="rem in reminders track by $index">
+					<ion-item class="item item-divider align_center">						   
+					 
+						{{rem.project_name}}
+					</ion-item>
+							
+					<ion-item data-ng-repeat="link in rem.results track by $index">
+						<p><a href="#/tab/workitem/{{link.id}}/viewscope/edit-workitem" style="text-decoration: none;" ng-click="closeRemainingWorkItemsModel()"> {{link.name}}-{{link.workItemVSOID}} </a>							
+					</ion-item>		
+				</div>
+
+			 </ion-list>
+		</div>	
+  </ion-content>
+</ion-modal-view>

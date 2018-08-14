@@ -1,0 +1,67 @@
+<ion-pane>
+    <ion-view view-title={{title}} can-swipe-back="false" hide-nav-bar="true" cache-view="false">
+        <!--<ion-content class="padding">
+        </ion-content>-->
+
+      <div class="bar bar-header">
+        <button class="button button-clear icon ion-ios-arrow-back" ng-click="goBack()"></button>
+        <h1 class="title">{{title}}</h1>
+      </div>
+
+        <ion-content class="content-stable padding" ng-class="kbOpen ? 'ct-vw' : 'ct-vw-nokb'">
+          <ion-refresher
+            pulling-text="Load chats..."
+            on-refresh="doRefresh()">
+          </ion-refresher>
+            <ion-list class="chtlist">
+                <ion-item ng-repeat="message in messages" class="messages" style="padding: 0;margin: 0;border: transparent;"
+                          ng-class="{other: message.from == memberID && !message.jhh}" on-hold="chatOption(message.$id, message.msg, message.from, message.msgType, $index)">
+                    <div class="message" ng-class="{'slide-right': hideTime, '': !hideTime}">
+                        <p class="userdetails" ng-if="message.from != memberID">{{message.fromName}}</p>
+                        <img class="userimgss" data-ng-src="{{fetchMemberImage(message)}}" width="35px" ng-if="message.from != memberID">
+                        <i ng-if="message.edited && message.edited == 1 &&  message.from == memberID" class="icon ion-edit"></i>
+
+                        <span ng-if="message.msgType == 'txt' && !message.jhh" class="chat-span" ng-bind-html="message.msg | linky">{{ message.msg }}</span>
+
+                        <p class="userdetails" ng-if="message.msgType == 'txt' && message.jhh" style="color: green">@JHH|{{message.fromName}}
+                            <span style="color: black;font-size: 12px;">| StoryId: {{message.story_id}}</span>
+                        </p>
+                        <span ng-if="message.msgType == 'txt' && message.jhh" class="chat-span" style="color: red;" ng-bind-html="message.msg | linky">{{ message.msg }}</span>
+
+                        <img ng-if="message.msgType == 'img'" class="chat-img" src="{{message.msg}}" ng-click="showImage(message.msg)">
+                        <i ng-if="message.edited && message.edited == 1 &&  message.from != memberID" class="icon ion-edit"></i>
+                    </div>
+                    <div class="time">{{message.time | date : 'short'}}</div>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+
+    </ion-view>
+    <div ng-if="showTags" class="tag-list">
+        <ion-list ng-if="!selfChat.active">
+            <ion-item ng-repeat="_tag in tagList" class="item item-avatar tag-item" ng-click="setTag(_tag)">
+                <img class="tag-img" src="{{_tag.imageUrl}}">
+                <h2>{{_tag.displayName}}</h2>
+            </ion-item>
+        </ion-list>
+        <ion-list ng-if="selfChat.active">
+            <ion-item ng-repeat="_jhhtag in jhhMembers" class="item item-avatar tag-item" ng-click="setJhhTag(_jhhtag)">
+                <img class="tag-img" src="images/user.png">
+                <h2>JHH|{{_jhhtag.name}}</h2>
+                <p>Story Id : {{_jhhtag.story_id}}</p>
+            </ion-item>
+        </ion-list>
+    </div>
+    <ion-footer-bar keyboard-attach class="bar-stable item-input-inset" style="height: 60px;">
+        <button class="button button-clear icon ion-android-more-vertical" ng-click="takePic()"></button>
+        <label class="item-input-wrapper" style="padding-right: 4px;padding-left: 4px;">
+            <!--<input id="myinput" type="text" placeholder="Type your message" on-return="sendMessage(); closeKeyboard()"
+                      ng-model="data.message" ng-focus="inputUp()" ng-blur="inputDown()"/>-->
+          <textarea id="myinput" type="text" placeholder="Type your message" on-return="sendMessage(); closeKeyboard()"
+                    ng-model="data.message" ng-focus="inputUp()" ng-blur="inputDown()"></textarea>
+        </label>
+        <button class="button button-clear" ng-click="sendMessage()">
+            Send
+        </button>
+    </ion-footer-bar>
+</ion-pane>

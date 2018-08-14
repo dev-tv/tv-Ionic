@@ -1,0 +1,225 @@
+<ion-view view-title="Post Job" hide-nav-bar="true" can-swipe-back="false">
+
+    <div class="bar bar-stable bar-header">
+        <button class="button button-clear icon ion-ios-arrow-back" ng-click="goBack()"></button>
+        <h1 class="title">{{headerTitle}} Job</h1>
+    </div>
+    <div class="bar bar-subheader" ng-if="postScreen === '4'">
+        <div class="topimg toplistimg" style="padding-bottom: 0;">
+            <i class="icon ion-navicon-round" style="font-size: 24px;color: #0044CE;" ng-click="openPopover()"></i>
+            <span class="badge badge-assertive bid-badge">{{allBids.total_bids}}</span>
+        </div>
+        <div class="row" style="padding-top: 18px;"><b style="margin: auto;color: #0044CE;font-size: 18px;padding-left: 13px;">Bids</b></div>
+    </div>
+
+    <ion-content class="has-header">
+        <ion-refresher
+                pulling-text="Refresh..."
+                on-pulling="pull()">
+        </ion-refresher>
+
+        <div ng-if="postScreen === '0'" style="margin-top: 10px">
+
+            <ion-spinner ng-if="showSpin" icon="spiral" style="position: absolute;margin: 5px;right: 10px;"></ion-spinner>
+            <div ng-if="showSpin" style="text-align: center;font-size: 18px;padding: 10px;">Loading please wait ...</div>
+        </div>
+
+        <div ng-if="postScreen === '2'" class="adddetails card" style="overflow: visible;">
+            <form name="detailLancerform" novalidat>
+                <div class="topimg">
+                    <img src="images/hand.png" style="width: 40px">
+                </div>
+            <form>
+
+
+            <div class="item" style="overflow: visible;">
+
+                <b style="margin-left: 10px;margin-top: 10px;font-size: 18px;">What service are you looking for?</b>
+                <div class="choosetitle">
+                    <div class="row" >
+                        <p ng-click="showModal('title')"><u>Choose service</u></p>
+                    </div>
+                    <div class="row">
+                        <textarea rows="1" class="title-area" ng-keyup="getAutoSuggestion(selTitle.txt, 'auto_job_titles')" ng-blur="clearTitle()" ng-model="selTitle.txt" placeholder="i.e. Mobile Development" data-ng-required="true"></textarea>
+                        <!--<tags-input placeholder="i.e. Mobile Development" ng-model="selType.txt" style="width: 100%;padding: 5px 0 10px 0;" data-ng-required="true">
+                            <auto-complete source="loadTags($query, 'auto_job_types')"></auto-complete>
+                        </tags-input>-->
+                    </div>
+                    <ul class="list-group" style="margin-bottom: 10px">
+                        <li class="list-group-item" ng-repeat="txtdata in filterTitle track by $index" ng-click="fillTextbox(txtdata.name, 'auto_job_titles')">{{txtdata.name}}</li>
+                    </ul>
+                </div>
+
+                <b style="margin-left: 10px;margin-top: 10px;font-size: 18px;">What is the deliverable?</b>
+                <div class="item choosetitle">
+                    <div class="row" >
+                        <p ng-click="showModal('type')"><u>Choose deliverable</u></p>
+                    </div>
+                    <div class="row">
+                        <textarea rows="1" class="title-area" ng-keyup="getAutoSuggestion(selType.txt, 'auto_job_types')" ng-blur="clearSuggestion()" ng-model="selType.txt" placeholder="i.e. A mobile web app" data-ng-required="true"></textarea>
+                    </div>
+                    <ul class="list-group" style="margin-bottom: 10px">
+                        <li class="list-group-item" ng-repeat="txtdata in filterTxt track by $index" ng-click="fillTextbox(txtdata.name, 'auto_job_types')">{{txtdata.name}}</li>
+                    </ul>
+                </div>
+
+                <b style="margin-left: 10px;font-size: 18px;">Describe the deliverable</b>
+                <div class="item textareabox" style="margin-top: 10px">
+                    <textarea rows="5" ng-model="project.description" data-ng-required="true" placeholder="i.e. Team planner app that enables global teams to collaborate and track shared work items for iOS and Android."></textarea>
+                </div>
+
+                <div class="row otherrow">
+                    <b>Max Budget ($)</b>
+                    <b>Bidding Days</b>
+                </div>
+                <div class="row">
+                    <div class="col col-50">
+                        <div class="row">
+                            <button class="button button-clear"></button>
+                            <input class="budget-input" ng-blur="checkGreaterValue()" type="number" ng-model="project.custom_range.max_amount">
+                        </div>
+                    </div>
+                    <div class="col col-50">
+                        <div class="row">
+                            <button class="button button-clear calender"></button>
+                            <input class="budget-input" type="number" ng-model="project.biddingDays" data-ng-required="true"></input>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row margintop10" >
+                    <b>Skills</b>
+                    <p ng-click="showModal('skill')"><u>Choose skills</u></p>
+                </div>
+                <div class="row">
+                    <button class="button button-clear mockup" style="background-image: url('images/mockup.png');"></button>
+                    <tags-input placeholder="i.e. AngularJS, Node.js" ng-model="selSkill.txt" style="width: 100%" data-ng-required="true">
+                        <auto-complete source="loadTags($query, 'auto_job_skills')"></auto-complete>
+                    </tags-input>
+                </div>
+            </div>
+            </form>
+                <div class="uploadimg">
+                    <div class="row margintop10" style="margin-bottom: 10%">
+                        <div class="bottombtn">
+                            <button data-ng-disabled="detailLancerform.$invalid"
+                                    type="submit" class="button button-dark col-40" ng-click="goBids('save')"><b>Save</b></button>
+                            <button data-ng-disabled="detailLancerform.$invalid"
+                                    type="submit" class="button button-balanced col-40" ng-click="goBids('post')"><b>Post</b></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div ng-if="postScreen === '3'" class="padding projectpage">
+        </div>
+
+        <div ng-if="postScreen === '4'" class="list-detail">
+            <ion-list style="margin-top: 45px">
+                <ion-item ng-if="allBids.data.length === 0">No bids available</ion-item>
+                <ion-item class="item-button-right" ng-repeat="bids in allBids.data" ng-click="goDetail(bids.user_id, bids.id)">
+                    <div ng-if="bids.user.first_name || bids.user.last_name" style="text-overflow: ellipsis;overflow: hidden;">
+                        {{bids.user.first_name}} {{bids.user.last_name}}
+                    </div>
+                    <div ng-if="!bids.user.first_name && !bids.user.last_name">NA</div>
+                    <div class="buttons">
+                        <div class="row" style="padding: 0">
+                            <myrating  ng-model="bids.user.total_rating_as_freelancer" max="rating.max" readonly="true"></myrating>
+                        </div>
+                        <button class="button button-clear" style="min-width: 65px;">
+                            <div style="color: black">${{bids.amount}}</div>
+                        </button>
+                        <button class="button button-clear">
+                            <i class="icon ion-chevron-right" style="color: #0044CE;"></i>
+                        </button>
+                    </div>
+                </ion-item>
+            </ion-list>
+            <ion-infinite-scroll
+                    ng-if="enableLoadMore"
+                    distance="30%"
+                    icon="ion-loading-c"
+                    on-infinite="loadMore()">
+            </ion-infinite-scroll>
+        </div>
+
+        <div ng-if="postScreen === '5'" class="projectpage">
+            <div class="topimg" style="padding-bottom: 0">
+                <img src="{{getProImg(lancerProfile.bidder.image)}}" style="width: 35%">
+                <i class="icon ion-checkmark-circled lancer-badge" ng-if="lancerProfile.userID === freelancer_user_id"></i>
+            </div>
+            <div class="row row-no-padding"><b style="margin: auto">{{lancerProfile.bidder.first_name}} {{lancerProfile.bidder.last_name}}</b></div>
+            <div class="row row-no-paddin"><b style="margin: auto">({{lancerProfile.bidder.designation}})</b></div>
+
+            <div class="row" style="margin-top: 0">
+                <div class="col-40" style="margin: auto;max-width: 125px;">
+                    <div class="row" ng-click="goReview()">
+                        <myrating ng-model="lancerProfile.bidder.total_rating_as_freelancer" max="rating.max" readonly="true"></myrating>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topimg" style="padding-bottom: 0">
+                <img src="images/hire.png" ng-click="acceptBid(true)">
+            </div>
+            <div class="row row-no-padding" ng-if="lancerProfile.userID !== freelancer_user_id"><b style="margin: auto">HIRE</b></div>
+            <div class="row row-no-padding" ng-if="lancerProfile.userID === freelancer_user_id"><b style="margin: auto">HIRED</b></div>
+
+            <div class="row">
+                <b class="heading" style="padding: 0 10px">Milestones</b>
+            </div>
+
+            <div style="width: 100%;padding: 0px 20px 5px 20px;">
+                <div class="row" ng-if="milestones.length === 0" style="border: 1px solid #000000a3;padding: 5px;box-shadow: 3px 3px 3px lightgrey;border-radius: 3px;margin: 5px 0;">
+                    No Milestone found.
+                </div>
+                <div class="row" ng-repeat="ms in milestones" style="border: 1px solid #000000a3;padding: 5px;box-shadow: 3px 3px 3px lightgrey;border-radius: 3px;margin: 5px 0;">
+                    <div class="col-67">{{$index + 1}}. {{ms.description}}</div>
+                    <b class="col-33">${{ms.amount}}</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <b class="heading" style="padding: 0 10px">Bid Content</b>
+            </div>
+
+            <div class="item" style="padding: 0 20px;margin-top: 0">
+                <textarea rows="3" readonly ng-model="lancerProfile.bidder.content"></textarea>
+            </div>
+
+            <div class="row" style="text-align: center"><div style="margin: auto;padding: 10px;font-size: 20px">Reviews <span style="color: green">({{lancerReviews.total_reviews}})</span></div></div>
+
+            <ion-list>
+                <ion-item class="item item-avatar" ng-repeat="rev in lancerReviews.data" style="margin-top: 0">
+                    <img src="{{getProImg(rev.image)}}" style="top: 0">
+                    <h2>{{rev.user_name.first_name}} {{rev.user_name.last_name}}</h2>
+                    <div class="row">
+                        <div class="col-50" style="text-overflow: ellipsis;overflow-x: auto;">{{rev.message}}</div>
+                        <div class="col-50">
+                            <myrating ng-model="rev.rating" max="rating.max" readonly="true"></myrating>
+                        </div>
+                    </div>
+                </ion-item>
+            </ion-list>
+        </div>
+
+        <div ng-if="postScreen === '6'" class="review">
+            <div class="item item-icon-left headtitle" style="margin-top: 10%">
+                <i class="icon ion-ios-compose"></i>
+                <b>Review</b>
+            </div>
+            <div class="item textareabox">
+                <textarea rows="5" ng-model="reviewsParam.message" placeholder="Write your review here..."></textarea>
+            </div>
+            <myrating ng-model="reviewsParam.rating" max="reviewsParam.max" style="text-align: center"></myrating>
+
+            <div class="submitbtn" style="margin-top: 20px">
+                <button class="button" ng-click="postReview()">
+                    Submit
+                </button>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>
