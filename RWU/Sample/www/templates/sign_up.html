@@ -1,0 +1,389 @@
+<div class = "bar bar-header bar-calm-900">
+  <!--<a class="button button-icon button-clear" ng-click="goBack()" href="#/login">-->
+  <a class="button button-icon button-clear" ng-click="goBack()">
+    <i class="icon ion-ios-arrow-back"></i>
+  </a>
+  <b class="title">{{i18nStrings.signUp.titlesignUp}}</b>
+  <button class="button button-icon button-clear">
+    <img src="img/profile/header.png">
+  </button>
+</div>
+
+<ion-content ng-class="{expanded:$scope.isExpanded}" scroll="true" >
+    <div class="content padding-top-40 scroll" ng-show="!isDriverNextPage">
+      <div class="item card-item" scrollY="true">
+        <div class="card ink ink-dark">
+            <div class="list">
+
+
+              <ion-md-input type="hidden" name="countrycode" ng-model="countrycode" style="display: none"></ion-md-input>
+
+        <ion-item class="driving-tickets" style="background:#cbf4e6;padding:0px;min-height: auto!important;">
+          <div class="input-label row" style="color: black;padding-left: 3%;max-width: 100%;width: 100%;">
+            <span class="col-50" style="margin-left: 0px;padding: 5px !important;word-wrap:break-word;white-space:pre-wrap;">{{i18nStrings.signUp.signUpAs.toUpperCase()}}</span>
+            <div class="col-50">
+            <label class="row" style="padding: 10px !important;" ng-click="showSelectDriverValue('driver')">
+              <input type="radio" ng-model="signUpAsDriver" value="driver">
+              {{i18nStrings.signUp.driver}}
+            </label>
+            <label class="row" style="padding: 10px !important;" ng-click="showSelectDriverValue('user')">
+              <input type="radio" ng-model="signUpAsDriver" value="user">
+              {{i18nStrings.signUp.user}}
+            </label>
+            </div>
+          </div>
+        </ion-item>
+
+              <div ng-if="!isSignUpAsDriver">
+              <input type="hidden" name="countrycode" ng-model="countrycode" >
+              <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.firstname}}</b>
+                </span>
+              </label>
+              <div class="item-register">
+                <input type="text" placeholder="{{i18nStrings.signUp.firstname}}" name="name" ng-model="register.name" required maxlength="255" class="input-register" >
+              </div>
+
+              <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.phone}}</b>
+                </span>
+              </label>
+              <div class="item-register">
+                <input type="tel" placeholder="{{i18nStrings.signUp.phone}}" name="phone" ng-model="register.phone" required maxlength="255" class="input-register">
+              </div>
+
+              <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.email}}</b>
+                </span>
+              </label>
+              <div class="item-register">
+                <input type="tel" placeholder="{{i18nStrings.signUp.email}}" name="email" ng-model="register.email" required maxlength="255" class="input-register">
+              </div>
+              <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.username}}</b>
+                </span>
+              </label>
+              <div class="item-register">
+                <input name="username" placeholder="{{i18nStrings.signUp.username}}" hightlight-color="balanced" type="text" required maxlength="255"ng-model="register.username" class="input-register">
+              </div>
+              <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.newPassword}}</b>
+                </span>
+              </label>
+              <div class="item-register">
+                <input name="password" placeholder="Contraseña" hightlight-color="energized" type="password" ng-model="register.password" class="input-register">
+              </div>
+              <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.confirmNewPassword}}</b>
+                </span>
+              </label>
+              <div class="item-register">
+                <input name="password_confirmation" placeholder="{{i18nStrings.signUp.confirmNewPassword}}" hightlight-color="energized" type="password" ng-model="register.password_confirmation" class="input-register">
+              </div>
+            </div>
+              <div ng-if="isSignUpAsDriver">
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.firstname}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.signUp.firstname}}" name="name"  ng-model="user.name" required maxlength="255" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.lastname}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.signUp.lastname}}" name="lastname"  ng-model="user.lastname" required maxlength="255" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.phone}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="tel" placeholder="{{i18nStrings.signUp.phone}}" name="phone"  ng-model="user.phone" required maxlength="255" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.email}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="email" placeholder="{{i18nStrings.signUp.email}}" name="email"  ng-model="user.email" required maxlength="255" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.username}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.signUp.username}}" name="username"  ng-model="user.username" required maxlength="255" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.newPassword}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="password" placeholder="{{i18nStrings.signUp.newPassword}}" name="password"  ng-model="user.password" required maxlength="255" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.signUp.confirmNewPassword}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="password" placeholder="{{i18nStrings.signUp.confirmNewPassword}}" name="password_confirmation"  ng-model="user.password_confirmation" required maxlength="255" class="input-register">
+                </div>
+
+
+                <div class="item-register">
+                 <ion-checkbox ng-model="user.terms" ng-show="termsShow"
+                              style="padding-left: 50px;color: #444;background-color: rgba(255, 255, 255, 0.6);margin-top: 20px;"></ion-checkbox>
+                 <div ng-show="termsShow" style="color: #444;position: relative;bottom: 34px;left: 65px;z-index: 1000;"> Aceptolos <a ng-click="goToTermsLink()" href="#">Términos y Condiciones</a>
+                 </div>
+                </div>
+
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.car_model}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.profileEdit.car_model}}" name="car_model"  ng-model="user.driver_attributes.car_model" required maxlength="255" class="input-register" ng-pattern-restrict="^[A-Za-z0-9]*$">
+                </div>
+
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.car_brand}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.profileEdit.car_brand}}" name="car_brand"  ng-model="user.driver_attributes.car_brand" required maxlength="255" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.car_plates}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.profileEdit.car_plates}}" name="car_plates"  ng-model="user.driver_attributes.car_plates" required maxlength="255" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.t_number}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.profileEdit.t_number}}" name="t_number"  ng-model="user.driver_attributes.t_number" required maxlength="255" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.insurance_expire_date}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="date" style="width: 100%;" placeholder="{{i18nStrings.profileEdit.insurance_expire_date}}" name="insurance_expire_date"  ng-model="user.driver_attributes.documents_attributes['0'].expire_date" class="input-register"  max="{{maxDate}}">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.licenseExpirationDate}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="date"  style="width: 100%;" placeholder="{{i18nStrings.profileEdit.licenseExpirationDate}}" name="licenseExpirationDate"  ng-model="user.driver_attributes.documents_attributes['1'].expire_date" class="input-register"  max="{{maxDate}}">
+                </div>
+
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.vehicleRegistrationExpDate}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="date" style="width: 100%;" placeholder="{{i18nStrings.profileEdit.vehicleRegistrationExpDate}}" name="vehicleRegistration"  ng-model="user.driver_attributes.documents_attributes['2'].expire_date" class="input-register"  max="{{maxDate}}">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.vehicleInspectionExpDate}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="date" style="width: 100%;" placeholder="{{i18nStrings.profileEdit.vehicleInspectionExpDate}}" name="vehicleInspection"  ng-model="user.driver_attributes.documents_attributes['3'].expire_date" class="input-register"  max="{{maxDate}}">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.license_number}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.profileEdit.license_number}}" name="license_number"  ng-model="user.driver_attributes.license_number" class="input-register" ng-pattern-restrict="^[A-Za-z0-9]*$">
+                </div>
+
+
+                  <label style="padding-left:3%;margin-top: 5%;background:#cbf4e6" class="item item-input item-select driving-tickets">
+                    <div class="input-label">
+                      {{i18nStrings.profileEdit.driving_tickets}}
+                    </div>
+                    <select style="background:#cbf4e6" ng-model="user.driver_attributes.driving_tickets"
+                            ng-change="showSelectValue(user.driver_attributes.driving_tickets)">
+                      <option selected value="true">Yes</option>
+                      <option value="false">No</option>
+                    </select>
+                  </label>
+
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.motor_number}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.profileEdit.motor_number}}" name="motor_number" maxlength="255" ng-model="user.driver_attributes.motor_number" class="input-register">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.chasis_number}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input type="text" placeholder="{{i18nStrings.profileEdit.chasis_number}}" name="chasis_number"  ng-model="user.driver_attributes.chasis_number" class="input-register" maxlength="255">
+                </div>
+
+                <label class="item item-input" >
+                <span class="input-label">
+                   <b>{{i18nStrings.profileEdit.vehicle_status}}</b>
+                </span>
+                </label>
+                <div class="item-register">
+                  <input style="width: 100% !important;" type="number" placeholder="{{i18nStrings.profileEdit.vehicle_status}}" name="vehicle_status"   ng-model="user.driver_attributes.vehicle_status" maxlength="255" min="1" max="5" class="input-register">
+                </div>
+
+
+                <div style="margin: 3%;padding-left:10px;font-size: 8pt;color: white;background-color:gray;margin-top: 5px">{{i18nStrings.profileEdit.vehicleStatusNote}}</div>
+                <!--<div style="margin-top: 5%;margin-left: 0%;margin-right: 0%">
+                  <div class="upload-documents">{{i18nStrings.profileEdit.uploadDocuments}}</div>
+
+                  <div class="row margin-top-five" style="border-bottom: solid 1px white;"
+                       ng-click="selectorImage('Driver license')">
+                    <div class="col-80" style="padding: 10px;font-size: 16px">{{i18nStrings.profileEdit.driverLicense}}</div>
+                    <div class="col-34">
+                      <div class="document-image" id="driverlicense"
+                           ng-style="{'background-image': 'url(' + document.driverLicenseImg + ')'}"></i></div>
+                    </div>
+                  </div>
+
+                  <div class="row" style="border-bottom: solid 1px white;margin-top: 5%"
+                       ng-click="selectorImage('Vehicle registration')">
+                    <div class="col-80" style="padding: 10px;font-size: 16px">{{i18nStrings.profileEdit.vehicleRegistration}}</div>
+                    <div class="col-34">
+                      <div class="document-image" id="vehicleRegistration"
+                           ng-style="{'background-image': 'url(' + document.vehicleRegistrationImg + ')'}"></i></div>
+                    </div>
+                  </div>
+                  <div class="row" style="border-bottom: solid 1px white;margin-top: 5%"
+                       ng-click="selectorImage('Vehicle insurance')">
+                    <div class="col-80" style="padding: 10px;font-size: 16px">{{i18nStrings.profileEdit.vehicleInsurance}}</div>
+                    <div class="col-34">
+                      <div class="document-image" id="vehicleInsurance"
+                           ng-style="{'background-image': 'url(' + document.vehicleInsuranceImg + ')'}"></i></div>
+                    </div>
+                  </div>
+
+                  <div class="row" style="border-bottom: solid 1px white;margin-top: 5%"
+                       ng-click="selectorImage('Vehicle Inspection')">
+                    <div class="col-80" style="padding: 10px;font-size: 16px">{{i18nStrings.profileEdit.vehicleInspection}}</div>
+                    <div class="col-34">
+                      <div class="document-image" id="vehicleInspection"
+                           ng-style="{'background-image': 'url(' + document.vehicleInspectionImg + ')'}"></i></div>
+                    </div>
+                  </div>
+                </div>-->
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="padding" ng-if="!isSignUpAsDriver">
+        <button class="button button-full button-positive-rect button-thin ink" ng-click="registerUser()">{{i18nStrings.signUp.signUp}}</button>
+      </div>
+      <div class="padding" ng-if="isSignUpAsDriver">
+        <button class="button button-full button-positive-rect button-thin ink" ng-click="nextPage()">Next</button>
+      </div>
+
+    </div>
+
+  <div ng-show="isDriverNextPage">
+    <div style="margin-top: 15%;margin-left: 0%;margin-right: 0%">
+      <div class="upload-documents">{{i18nStrings.profileEdit.uploadDocuments}}</div>
+
+      <div class="row margin-top-five" style="border-bottom: solid 1px white;"
+           ng-click="selectorImage('Driver license')">
+        <div class="col-80" style="padding: 10px;font-size: 16px">{{i18nStrings.profileEdit.driverLicense}}</div>
+        <div class="col-34">
+          <div class="document-image" id="driverlicense"
+               ng-style="{'background-image': 'url(' + document.driverLicenseImg + ')'}"></i></div>
+        </div>
+      </div>
+
+      <div class="row" style="border-bottom: solid 1px white;margin-top: 5%"
+           ng-click="selectorImage('Vehicle registration')">
+        <div class="col-80" style="padding: 10px;font-size: 16px">{{i18nStrings.profileEdit.vehicleRegistration}}</div>
+        <div class="col-34">
+          <div class="document-image" id="vehicleRegistration"
+               ng-style="{'background-image': 'url(' + document.vehicleRegistrationImg + ')'}"></i></div>
+        </div>
+      </div>
+
+      <div class="row" style="border-bottom: solid 1px white;margin-top: 5%"
+           ng-click="selectorImage('Vehicle insurance')">
+        <div class="col-80" style="padding: 10px;font-size: 16px">{{i18nStrings.profileEdit.vehicleInsurance}}</div>
+        <div class="col-34">
+          <div class="document-image" id="vehicleInsurance"
+               ng-style="{'background-image': 'url(' + document.vehicleInsuranceImg + ')'}"></i></div>
+        </div>
+      </div>
+
+      <div class="row" style="border-bottom: solid 1px white;margin-top: 5%"
+           ng-click="selectorImage('Vehicle Inspection')">
+        <div class="col-80" style="padding: 10px;font-size: 16px">{{i18nStrings.profileEdit.vehicleInspection}}</div>
+        <div class="col-34">
+          <div class="document-image" id="vehicleInspection"
+               ng-style="{'background-image': 'url(' + document.vehicleInspectionImg + ')'}"></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="padding" style="padding-bottom: 0 !important;">
+        <button class="button button-full button-positive-rect button-thin ink"  ng-click="registerDriver(true)">{{i18nStrings.signUp.signUp}}</button>
+        <!--<button class="button button-full button-positive-rect button-thin ink" ng-click="registerDriver(true)">Next</button>-->
+    </div>
+
+    <div class="padding" style="padding-top: 0 !important;">
+        <button class="button button-full button-positive-rect button-thin ink" style="border-color: #FCB040;background: #FCB040 !important;" ng-click="registerDriver(false)">Skip</button>
+    </div>
+  </div>
+</ion-content>

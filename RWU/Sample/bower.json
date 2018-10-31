@@ -1,0 +1,16 @@
+{
+  "name": "wayCab dependence plugins",
+  "private": "true",
+  "devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.1.0"
+  },
+  "dependencies": {
+    "angular-messages": "~1.4.5",
+    "ionic-rating": "~0.1.0",
+    "ngCordova": "0.1.20-alpha",
+    "angular-socket-io": "~0.7.0",
+    "socket.io-client": "~2.0.2",
+    "angular-libphonenumber": "^1.1.0",
+    "font-awesome": "~5.0.11"
+  }
+}

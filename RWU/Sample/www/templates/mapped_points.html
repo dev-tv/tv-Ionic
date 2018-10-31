@@ -1,0 +1,21 @@
+<ion-view view-title="{{i18nStrings.mappedPoints.preview}}" class="font-view-title">
+  <ion-header-bar class="bar-stable">
+    <p>{{i18nStrings.mappedPoints.routesPreview}}</p>
+  </ion-header-bar>
+  <ion-content class="animate-fade-slide-in" scroll="false">
+    <div id="mapa" class="map-height"></div>
+  </ion-content>
+  <ion-footer-bar ng-if="!$rootScope.isBidEnable">
+    <div class="bar bar-footer" >
+      <div class="button-bar">
+        <button class="button button-block button-discard button-arrival"  ng-disabled="invitationSent" ng-click="cancel_request()">
+          {{i18nStrings.mappedPoints.cancel}}
+        </button>
+        <button class="button button-block button-accept button-arrival"  ng-disabled="invitationSent" ng-click="check_for_request()">
+          {{txt_btn}}
+        </button>
+      </div>
+    </div>
+  </ion-footer-bar>
+</ion-view>
+

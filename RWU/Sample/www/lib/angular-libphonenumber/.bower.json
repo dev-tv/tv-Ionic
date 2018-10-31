@@ -1,0 +1,38 @@
+{
+  "name": "angular-libphonenumber",
+  "main": [
+    "dist/angular-libphonenumber.min.js"
+  ],
+  "version": "1.1.0",
+  "homepage": "https://github.com/cwill747/angular-libphonenumber",
+  "authors": [
+    "Cameron Will <scwill@us.ibm.com>"
+  ],
+  "description": "Nathan Hammond's libphonenumber ported to an angular filter",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "angular": "^1.2.x",
+    "bootstrap": "~3.3.4",
+    "angular-mocks": "~1.2.9",
+    "jquery": "~2.1.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cwill747/angular-libphonenumber"
+  },
+  "ignore": [
+    "bower_components",
+    "node_modules",
+    "demo",
+    "src"
+  ],
+  "_release": "1.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.0",
+    "commit": "61c94e6f970dc7b91a3feabb7614e40ef0e65713"
+  },
+  "_source": "https://github.com/cwill747/angular-libphonenumber.git",
+  "_target": "^1.1.0",
+  "_originalSource": "angular-libphonenumber"
+}

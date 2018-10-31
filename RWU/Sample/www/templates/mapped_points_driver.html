@@ -1,0 +1,17 @@
+<ion-view view-title="{{i18nStrings.mappedPointsDriver.incomingRideRequest}}" class="font-view-title">
+  <ion-content ng-class="{expanded:$scope.isExpanded}" scroll="false">
+    <!-- <div><p>Distancia Total: <span id="total_d">{{totalKm}}</span></p></div>  -->
+    <div id="mapa" class="map-height"></div>
+  </ion-content>
+  <ion-footer-bar>
+    <div class="bar bar-footer">
+      <div class="button-bar">
+        <button class="button button-block button-discard button-arrival"  ng-click="reject_request()">
+          {{i18nStrings.mappedPointsDriver.discard}}
+        </button>
+        <button class="button button-block button-accept button-arrival"  ng-click="accept_request()">
+          {{i18nStrings.mappedPointsDriver.accept}}
+        </button>
+      </div>
+    </div>
+</ion-view>

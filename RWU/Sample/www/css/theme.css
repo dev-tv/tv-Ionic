@@ -1,0 +1,73 @@
+/* Left button in profile, Button register in login */
+.positive-900-bg, .button-positive-900, .bar .button-positive-900, .header-positive-900, .button-bar-positive-900, .bar-positive-900, .positive-900-border, .positive-900-bg:hover, .button-positive-900:hover, .bar .button-positive-900:hover, .header-positive-900:hover, .button-bar-positive-900:hover, .bar-positive-900:hover, .positive-900-border:hover, .positive-900-bg:active, .bar .button-positive-900:active, .button-positive-900:active, .header-positive-900:active, .button-bar-positive-900:active, .bar-positive-900:active, .positive-900-border:active, .positive-900-bg.activated, .button-positive-900.activated, .bar .button-positive-900.activated, .header-positive-900.activated, .button-bar-positive-900.activated, .bar-positive-900.activated, .positive-900-border.activated{
+  background-color: darkcyan;
+  color: white;
+}
+
+/* Bar color */
+.bar-calm-900, .bar-calm-900:hover, .bar-calm-900:active{
+  background-color: #29e8ad;
+}
+
+/* Text button forgot password*/
+.button.button-light.button-clear{
+  color: white;
+  /*background-color: rgba(245, 245, 245, 0.7);*/
+}
+
+/* Button update profile */
+.button.button-login{
+  background-color: cadetblue;
+  color: white;
+}
+
+/* Button login */
+.button.button-positive, .button.button-positive.activated, .button.button-positive:active, .button.button-positive:hover{
+  /*background-color: #2f839b;*/
+  background-color: #4d6b6b;
+  color: white;
+}
+
+/* Button edit password or right in data edition */
+.button.btn-right, .button.btn-right.activated, .button.btn-right:active, .button.btn-right:hover {
+  background-color: #165d78;
+  color: white;
+}
+
+.app-icon {
+  height: 150px;
+  margin: 0 auto;
+  width: 150px;
+}
+
+.item-md-label input{
+  background-color: rgba(255, 255, 255, 0.6);
+  color: black;
+}
+
+.item-md-label .input-label{
+  font-weight: bold;
+  color: black;
+  text-transform: uppercase;
+}
+
+/* Top bar text color */
+.header-item{
+  color: white;
+}
+
+#payment-form-container .item-radio .radio-icon{
+  top : 10px;
+}
+
+/* Button service request */
+.button-calm-900, .button-calm-900:hover, .button-calm-900:hover, .button-calm-900:active{
+  background-color: #29e8ad;
+  color: white;
+}
+
+/* Button located in a lower bar inside a bar class, View MappedPointsDriver */
+.bar .button-calm-900, .bar .button-calm-900:hover, .bar .button-calm-900:hover, .bar .button-calm-900:active{
+  background-color: #29e8ad;
+  color: white;
+}

@@ -1,0 +1,35 @@
+<ion-view view-title="{{i18nStrings.availableDrivers.nearestDriver}}" class="no-shadow" class="font-view-title">
+
+<!--hidden form for culqi payment-->
+  <form name="cardform" style="position: fixed;">
+    <input type="text" data-culqi="card[email]" id="card[email]">
+    <input type="text" data-culqi="card[number]" id="card[number]">
+    <input type="text" data-culqi="card[exp_month]"  id="card[exp_month]">
+    <input type="text" data-culqi="card[exp_year]" id="card[exp_year]">
+    <input type="text" data-culqi="card[cvv]" id="card[cvv]">
+  </form>
+
+  <div class="button-bar bar-ride">
+    <a class="button border-gray-right border-ride-left" ng-click="showDataDriver()"><img src="img/ride_request/icon_user.png" class="img-centrado"></a>
+    <a class="button border-gray-right icon" ng-click="showDataRide()"><img src="img/ride_request/icon_info.png" class="img-centrado"></a>
+    <a class="button border-gray-right icon" ng-click="callDriver();"><img src="img/ride_request/icon_call.png" class="img-centrado"></a>
+    <a class="button border icon border-ride-right" ng-click="showTransferInfo();" ng-show="isTransfer"><img src="img/ride_request/icon_locate.png" class="img-centrado"></a>
+  </div>
+
+  <ion-content ng-class="{expanded:$scope.isExpanded}" scroll="false">
+    <div class="content">
+      <div id="admap" style="width: 100%; height: calc(100vh - 88px);"></div>
+    </div>
+  </ion-content>
+
+  <ion-footer-bar>
+    <div class="bar bar-footer">
+      <div class="button-bar">
+        <button class="button button-block button-block-blue button-arrival button-arrival-drivers"  ng-disabled="driver_arrived" ng-click="cancel()">
+          {{i18nStrings.availableDrivers.cancelRide}}
+        </button>
+      </div>
+    </div>
+  </ion-footer-bar>
+</ion-view>
+

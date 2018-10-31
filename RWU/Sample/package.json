@@ -1,0 +1,124 @@
+{
+  "name": "wayCab",
+  "version": "1.0.0",
+  "description": "App Taxis",
+  "dependencies": {
+    "cordova-android": "7.1.1",
+    "cordova-android-support-gradle-release": "^1.4.4",
+    "cordova-background-geolocation": "file:../../13Aug2018/cordova-background-geolocation-master",
+    "cordova-open-native-settings": "^1.5.1",
+    "cordova-plugin-actionsheet": "^2.3.3",
+    "cordova-plugin-app-version": "^0.1.9",
+    "cordova-plugin-background-fetch": "^5.4.1",
+    "cordova-plugin-background-mode": "^0.7.2",
+    "cordova-plugin-camera": "^4.0.3",
+    "cordova-plugin-compat": "^1.2.0",
+    "cordova-plugin-console": "^1.1.0",
+    "cordova-plugin-core-android-extensions": "^1.2.0",
+    "cordova-plugin-crosswalk-webview": "^2.4.0",
+    "cordova-plugin-customurlscheme": "^4.3.0",
+    "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-device-orientation": "^2.0.1",
+    "cordova-plugin-dialogs": "^2.0.1",
+    "cordova-plugin-file": "^6.0.1",
+    "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-globalization": "^1.11.0",
+    "cordova-plugin-image-resizer": "^1.0.0",
+    "cordova-plugin-inappbrowser": "^3.0.0",
+    "cordova-plugin-insomnia": "git+https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Plugin.git",
+    "cordova-plugin-secure-storage": "^2.6.8",
+    "cordova-plugin-splashscreen": "^5.0.2",
+    "cordova-plugin-whitelist": "^1.3.3",
+    "cordova-support-google-services": "^1.1.0",
+    "cordova.plugins.diagnostic": "^4.0.8",
+    "gulp": "^3.5.6",
+    "gulp-concat": "^2.2.0",
+    "gulp-minify-css": "^0.3.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-sass": "^1.3.3",
+    "ionic-plugin-keyboard": "^2.2.1",
+    "phonegap-plugin-multidex": "^1.0.0",
+    "phonegap-plugin-push": "^2.1.3",
+    "production": "0.0.2",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.2.1"
+  },
+  "devDependencies": {
+    "bower": "^1.3.3",
+    "gulp-minify-css": "^0.3.13",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-util": "^2.2.14",
+    "shelljs": "^0.3.0"
+  },
+  "cordovaPlugins": [
+    "cordova-plugin-device",
+    "cordova-plugin-console",
+    "cordova-plugin-whitelist",
+    "cordova-plugin-splashscreen",
+    "com.ionic.keyboard"
+  ],
+  "cordovaPlatforms": [
+    {
+      "platform": "android",
+      "version": "7.0.0",
+      "locator": "android@7.0.0"
+    }
+  ],
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-compat": {},
+      "cordova-open-native-settings": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-console": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-device-orientation": {},
+      "cordova-plugin-background-mode": {},
+      "cordova.plugins.diagnostic": {},
+      "cordova-plugin-geolocation": {},
+      "cordova-plugin-globalization": {},
+      "cordova-plugin-crosswalk-webview": {
+        "XWALK_VERSION": "23+",
+        "XWALK_LITEVERSION": "xwalk_core_library_canary:17+",
+        "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
+        "XWALK_MODE": "embedded",
+        "XWALK_MULTIPLEAPK": "false"
+      },
+      "cordova-plugin-app-version": {},
+      "cordova-plugin-secure-storage": {},
+      "ionic-plugin-keyboard": {},
+      "cordova-support-google-services": {},
+      "cordova-plugin-insomnia": {},
+      "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+        "OKHTTP_VERSION": "3.+"
+      },
+      "cordova-plugin-background-fetch": {
+        "LICENSE": "951cf89d476b225cb0874117118fdf0668beccaec7ef7b765273f5dd1bfa8f86"
+      },
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      },
+      "cordova-plugin-customurlscheme": {
+        "URL_SCHEME": "ridewithup",
+        "ANDROID_SCHEME": " ",
+        "ANDROID_HOST": " ",
+        "ANDROID_PATHPREFIX": "/"
+      },
+      "phonegap-plugin-push": {
+        "FCM_VERSION": "11.8.0"
+      },
+      "cordova-background-geolocation": {
+        "LICENSE": "951cf89d476b225cb0874117118fdf0668beccaec7ef7b765273f5dd1bfa8f86",
+        "GOOGLE_API_VERSION": "11.8.0",
+        "APPCOMPAT_VERSION": "27.0.0"
+      },
+      "cordova-plugin-core-android-extensions": {},
+      "cordova-plugin-image-resizer": {},
+      "cordova-plugin-camera": {}
+    },
+    "platforms": [
+      "android"
+    ]
+  }
+}

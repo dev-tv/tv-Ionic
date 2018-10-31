@@ -1,0 +1,52 @@
+<ion-view >
+<ion-view >
+  <ion-content ng-class="{expanded:$scope.isExpanded}" scroll="true">
+    <div class="list settings-list">
+
+        <div class="item" >
+          <h2 style="font-weight:bold">{{i18nStrings.markRoutes.location}}:</h2>
+          <div class="settings-location">
+            <p>{{passengerAddress}}</p>
+            <button class="button button-small button-stable" ng-click="changePassengerLocation()">{{i18nStrings.markRoutes.edit}}</button>
+          </div>
+        </div>
+        <div class="item" >
+          <h2 style="font-weight:bold">{{i18nStrings.markRoutes.numberOfDestinations}}:</h2>
+          <div class="range range-positive" style="padding: 0;margin: 0;">
+            <input type="range" name="volume" min="1" max="10" ng-model="cp_number" ng-change="checknumber(cp_number)" style="margin: 0">
+            <i class="icon ion-ios-plus-round"></i>
+            <div>{{i18nStrings.markRoutes.total}}: {{cp_number}}</div>
+          </div>
+        </div>
+
+      <div class="item" >
+        <h2 style="font-weight:bold">{{i18nStrings.markRoutes.paymentMethod}}:</h2>
+        <div class="settings-location">
+          <p>{{text_payment_method()}}</p>
+          <a class="button button-small button-stable" href="#/app/payment_edit" >{{i18nStrings.markRoutes.edit}}</a>
+        </div>
+      </div>
+
+        <div class="item" >
+          <h2 style="font-weight:bold">{{i18nStrings.markRoutes.typeAReferencePoint}}:</h2>
+          <!--<form name="referencePointForm" ng-submit="startCheckPoints(referencePointForm,cardPayment)">-->
+            <div class="list">
+              <label class="item item-input item-floating-label" >
+                <span class="input-label">{{i18nStrings.markRoutes.referencePoint}}</span>
+                <input type="text" placeholder="{{i18nStrings.markRoutes.referencePointExample}}" name="r_point" ng-model="$root.r_point"  maxlength="255">
+              </label>
+            </div>
+            <ion-footer-bar style="position: static;">
+              <div class="button-bar">
+                <button class="button button-positive waves-effect waves-button waves-light"  ng-click="startCheckPoints()" style="margin-top: 0; min-height: 47px; max-width: 100%;">
+                  {{i18nStrings.markRoutes.save}}
+                </button>
+              </div>
+            </ion-footer-bar>
+
+        </div>
+        <br><br><br><br>
+
+    </div>
+  </ion-content>
+</ion-view>

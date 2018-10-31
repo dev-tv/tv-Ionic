@@ -1,0 +1,37 @@
+<ion-view>
+    <ion-content class="animate-fade-slide-in" scroll="false" style="top: 0">
+      <button class="button button-icon button-clear icon ion-navicon upper-corner" menu-toggle="left" id="map-more-btn" >
+      </button>
+
+      <button class="button button-icon button-clear upper-corner" style="right: 5px">
+          <img src="img/header.png" class="logo-header">
+      </button>
+      <button class="button button-icon button-clear upper-center"  style="right: 5px" ng-click="EnableDisableBidFeature()">
+        <img src="{{bidIcon}}" class="logo-header">
+      </button>
+
+      <div class="list list-inset list-map">
+        <label class="item item-input  text-indent-10 map-search">
+          <i class="icon" style=" margin-left: 2px;">
+            <img src="img/Map/location.png" class="img-center">
+          </i>
+          <input type="text" placeholder="{{mapSearchInputPlaceholder}}" ng-change='disableTap()' ng-model="search" id="pac-input" onclick="this.select();" class="text-gray">
+      </label>
+      <a class="button img-map-filter" id="pac-settings-btn" ng-if="isAuthorized()" ui-sref="{{urlMarkRoutes()}}" ng-hide="setPassengerLocationMode"></a>
+    </div>
+
+    <div id="map" class="map-position"></div>
+  </ion-content>
+
+  <button  class="map-set-travel-btn button button-fab button-fab-bottom-left button-calm-900 flip pane on"  ng-click="CheckPoint()" ng-hide="setPassengerLocationMode">
+    <i class="icon ion-android-car">
+     <!--<img src="{{icon_new_request}}" class="img-center padding-bottom-5">-->
+    </i>
+  </button>
+  <button  class="map-set-travel-btn button button-fab button-fab-bottom-left button-calm-900 flip pane on"  ng-click="setPassengerLocation()" ng-show="setPassengerLocationMode">
+    <i class="icon ion-checkmark-round"></i>
+  </button>
+  <span class="map-set-travel-lbl" ng-hide ="setPassengerLocationMode">{{i18nStrings.map.requestTravel}}</span>
+  <span class="map-set-travel-lbl" ng-show ="setPassengerLocationMode" >{{i18nStrings.map.setLocation}}</span>
+
+</ion-view>
