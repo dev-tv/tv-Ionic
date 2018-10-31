@@ -1,0 +1,391 @@
+<ion-header>
+    <ion-navbar class="setup-Navbar" hideBackButton="true">
+        <ion-buttons (click)="gotoSearch()" left style="padding: 5px">
+            <button ion-button icon-only>
+                <img style="max-width: 70%;" src="assets/images/newsfeed/search.png">
+            </button>
+        </ion-buttons>
+        <ion-title style="text-align: center;">
+            Create Trail
+        </ion-title>
+        <ion-buttons right style="padding: 5px">
+            <button ion-button icon-only>
+                <img style="max-width: 70%;" src="assets/images/newsfeed/bell.png">
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content style="background-color:#ecf0f1" padding-top padding-bottom padding-left>
+    <p style="font-size: 22px; margin-left: 12px;margin-bottom: 22px;margin-top: 12px;">Create Trail</p>
+    <ion-card style="margin: 0">
+        <ion-card-content>
+            <div class="trail-detail-div">
+                <p class="trail-detail-div-title">Title of the Trail</p>
+                <ion-item>
+                    <!-- <ion-input [(ngModel)]="mainTrail.title" class="trail-detail-item-divider" type="text"></ion-input>-->
+
+
+                    <input type="text" [(ngModel)]="mainTrail.title" class="trail-detail-item-divider"
+                           style="width: 100%;height: 50px"/>
+                </ion-item>
+            </div>
+            <div class="add-place-div">
+                <p class="add-place-div-title">Source</p>
+                <ion-searchbar style="padding: 0" class="add-place-item-divider" [(ngModel)]="mainTrail.source"
+                               placeholder="Enter a source" [showCancelButton]="true"
+                               (ionInput)="updateSearchSource()"></ion-searchbar>
+                <!--<ion-input class="add-place-item-divider" type="text" [(ngModel)]="destination" placeholder="Enter a location"  ></ion-input>-->
+                <ion-list>
+                    <ion-item *ngFor="let item of autocompleteItemsSource" tappable (click)="chooseItemSource(item)">
+                        {{ item.description }}
+                    </ion-item>
+                </ion-list>
+            </div>
+            <div class="add-place-div">
+                <p class="add-place-div-title">Destination</p>
+                <ion-searchbar style="padding: 0" class="add-place-item-divider" [(ngModel)]="mainTrail.destination"
+                               placeholder="Enter a destination" [showCancelButton]="true"
+                               (ionInput)="updateSearchDestination()"></ion-searchbar>
+                <!--<ion-input class="add-place-item-divider" type="text" [(ngModel)]="destination" placeholder="Enter a location"  ></ion-input>-->
+                <ion-list>
+                    <ion-item *ngFor="let item of autocompleteItemsDestination" tappable
+                              (click)="chooseItemDestination(item)">
+                        {{ item.description }}
+                    </ion-item>
+                </ion-list>
+            </div>
+
+            <div class="trail-detail-div">
+                <p class="trail-detail-div-title">No of days for the Trail</p>
+                <ion-item>
+                    <!--oninput="javascript: if (this.mainTrail.days == 0) {this.presentToast('Number of days cannot be less than 1',2000); this.mainTrail.days = 1; }"-->
+                    <ion-input [(ngModel)]="mainTrail.days" (ionChange)="onChangeNoOfDays(mainTrail.days)"
+                               class="trail-detail-item-divider" type="number"></ion-input>
+
+
+                    <!--<input type="number" [(ngModel)]="mainTrail.days" class="trail-detail-item-divider"
+                           style="width: 100%;height: 50px"  (input)="onChangeNoOfDays(mainTrail.days)"/>-->
+                </ion-item>
+            </div>
+            <div class="trail-detail-div">
+                <p class="trail-detail-div-title">Journey start date</p>
+                <ion-item>
+                    <ion-datetime displayFormat="MMM, DD YYYY" [(ngModel)]="mainTrail.startdate"
+                                  class="trail-detail-item-divider"
+                                  style="height: 40px;width: 100%;padding-top: 10px;"></ion-datetime>
+                    <!--<ion-input [(ngModel)]="mainTrail.startdate | date:'shortTime'" class="trail-detail-item-divider" type="date"></ion-input>-->
+                </ion-item>
+            </div>
+            <div class="trail-detail-div-title trail-detail-div">Description of trail</div>
+            <textarea padding [(ngModel)]="mainTrail.description" class="trail-detail-textarea"></textarea>
+            <ion-row style="margin-top: 15px">
+                <ion-col style="padding: 0px;margin-top: 2px;" (click)="goToPrevSlide()" col-4><img
+                        style="width: 10px;float: right" src="assets/images/createtrail/left_arrow.png"></ion-col>
+                <ion-col style="padding: 0px;font-size: 14px" col-4 text-center
+                         *ngIf="mainTrail.day && mainTrail.day.length > 0">Day {{slideIndex}}
+                </ion-col>
+                <ion-col style="padding: 0px;font-size: 14px" col-4 text-center
+                         *ngIf="!mainTrail.day || mainTrail.day.length == 0">Day 1
+                </ion-col>
+                <ion-col style="padding: 0px;margin-top: 2px;" col-4 class="row">
+                    <img style="width: 10px" (click)="goToNextSlide()" src="assets/images/createtrail/right_arrow.png">
+                    <ion-icon name="add" style="width: 10px;margin-left: 70%;" *ngIf="mainTrail.day"
+                              (click)="addItemOnDay(slideIndex)"></ion-icon>
+                    <ion-icon name="add" style="width: 10px;margin-left: 70%;" *ngIf="!mainTrail.day"
+                              (click)="addItemOnDay(1)"></ion-icon>
+                    <!--<img style="width: 10px;margin-left: 50%;" *ngIf="!mainTrail.day" src="assets/images/createtrail/right_arrow.png">
+                    <img style="width: 10px;margin-left: 50%;" *ngIf="!mainTrail.day" src="assets/images/createtrail/right_arrow.png">-->
+                </ion-col>
+            </ion-row>
+
+            <!-- ################# DAY SLIDER ################# -->
+            <ion-slides style="margin-top: 3%" (ionSlideDidChange)="slideChanged()">
+
+                <ion-slide *ngFor="let _day of mainTrail.day;let dayIndex=index" style="padding-right: 2px;">
+                    <ion-item *ngFor="let _row of _day.itineraryDataStorageArray; let i=index"
+                              style="padding-left: 0px">
+
+                        <div class="row">
+                            <div col-9 class="trail-detail-item-divider text-ellipsis"
+                                 (click)="openDetailInAccordian(dayIndex,i)"
+                                 style="height: 40px;line-height: 40px;margin: 0px">{{_row.time}}<span
+                                    (click)="gotoPlaceDetailPage(_row.location)"> {{_row.location_text}}</span></div>
+                            <div col-3 class="trail-detail-item-divider" style="padding-left: 0px;margin: 0px">
+                                <div class="row edit-delete-div">
+                                    <img col-6 class="edit-days" (click)="editItemOnDay(_row,slideIndex,i)"
+                                         src="assets/images/mytrails/edit.png">
+                                    <img col-6 class="edit-days" (click)="deleteTrail(dayIndex,i)"
+                                         src="assets/images/mytrails/delete.png">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="_row.openAccordian" class="row trail-detail-item-divider">
+                            <div text-wrap col-9
+                                 style="min-height: 30px;height:60px;margin: 0px;padding: 5px 0;overflow: scroll;"><span
+                                    style="font-weight: bold">Acitvity:</span> {{_row.activity}}
+                            </div>
+                            <div col-3 style="margin: 0px">
+                                <img *ngIf="_row.vehicle == 0" src="assets/images/traildetail/cycle.png">
+                                <img *ngIf="_row.vehicle == 1" src="assets/images/traildetail/scooter.png">
+                                <img *ngIf="_row.vehicle == 2" src="assets/images/traildetail/car.png">
+                            </div>
+                        </div>
+
+                    </ion-item>
+                </ion-slide>
+            </ion-slides>
+
+
+            <div class="trail-detail-image" id="mmap"></div>
+
+            <ion-item>
+                <!--<ion-input [(ngModel)]="mainTrail.link1" class="trail-detail-item-divider" style="margin-top: 15px" type="text" placeholder="Link1:"></ion-input>-->
+
+                <input type="text" [(ngModel)]="mainTrail.link1" class="trail-detail-item-divider"
+                       style="width: 100%;height: 50px;margin-top: 15px" placeholder="Link1:"/>
+            </ion-item>
+            <ion-item>
+                <!-- <ion-input [(ngModel)]="mainTrail.link2" class="trail-detail-item-divider" style="margin-top: 15px" type="text" placeholder="Link2:"></ion-input>-->
+
+                <input type="text" [(ngModel)]="mainTrail.link2" class="trail-detail-item-divider"
+                       style="width: 100%;height: 50px;margin-top: 15px" placeholder="Link2:"/>
+            </ion-item>
+            <ion-item>
+                <!--<ion-input [(ngModel)]="mainTrail.link3" class="trail-detail-item-divider" style="margin-top: 15px" type="text" placeholder="Link3:"></ion-input>-->
+
+
+                <input type="text" [(ngModel)]="mainTrail.link3" class="trail-detail-item-divider"
+                       style="width: 100%;height: 50px;margin-top: 15px" placeholder="Link3:"/>
+            </ion-item>
+            <ion-item>
+                <!--  <ion-input [(ngModel)]="mainTrail.link4" class="trail-detail-item-divider" style="margin-top: 15px" type="text" placeholder="Link4:"></ion-input>-->
+
+                <input type="text" [(ngModel)]="mainTrail.link4" class="trail-detail-item-divider"
+                       style="width: 100%;height: 50px;margin-top: 15px" placeholder="Link4:"/>
+            </ion-item>
+            <div style="height: 1px;width: 100%;background-color:#ECEFF4"></div>
+
+            <ion-list>
+                <ion-item style="padding-left: 0px; margin-top: 15px">
+                    <ion-row>
+                        <ion-col col-4 class="trail-detail-column">
+                            Make it:
+                        </ion-col>
+                        <ion-col col-8>
+                            <ion-row>
+                                <input type="radio" id="private" name="Budget" [(ngModel)]="mainTrail.privacy"
+                                       value="1">
+                                <label class="radio-txt" for="private" text-wrap>Private</label>
+                            </ion-row>
+                            <ion-row style="margin-top: 10px">
+                                <input type="radio" id="searchable" name="Budget" [(ngModel)]="mainTrail.privacy"
+                                       value="2">
+                                <label class="radio-txt" for="searchable" text-wrap>Public not searchable</label>
+                            </ion-row>
+                            <ion-row style="margin-top: 10px">
+                                <input type="radio" id="notsearchable" name="Budget" [(ngModel)]="mainTrail.privacy"
+                                       value="3">
+                                <label class="radio-txt" for="notsearchable" text-wrap>Public and searchable</label>
+                            </ion-row>
+                            <ion-row style="margin-top: 10px">
+                                <input type="radio" id="Friends" name="Budget" [(ngModel)]="mainTrail.privacy"
+                                       value="4">
+                                <label class="radio-txt" for="Friends" text-wrap>Followers</label>
+                            </ion-row>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+                <div style="height: 1.5px;width: 100%;background-color:#ECEFF4"></div>
+                <ion-item style="padding-left: 0px;">
+                    <ion-row>
+                        <ion-col col-4 class="trail-detail-column">
+                            This is a:
+                        </ion-col>
+                        <ion-col col-8>
+                            <ion-row>
+                                <input type="radio" id="Temperorytrail" name="this_is_a"
+                                       [(ngModel)]="mainTrail.duration" value="0">
+                                <label class="radio-txt" for="Temperorytrail" text-wrap>Temporary trail</label>
+                            </ion-row>
+                            <ion-row style="margin-top: 10px">
+                                <input type="radio" id="Permanenttrail" name="this_is_a"
+                                       [(ngModel)]="mainTrail.duration" value="1">
+                                <label class="radio-txt" for="Permanenttrail" text-wrap>Permanent trail</label>
+                            </ion-row>
+                            <ion-row style="margin-top: 10px" *ngIf="mainTrail.duration && mainTrail.duration == '0'">
+                                <div style="font-size: 10px;">Will be visible for <input style="width: 25%;"
+                                                                                         [(ngModel)]="mainTrail.visibleDays"
+                                                                                         class="trail-detail-item-divider"
+                                                                                         type="number" name="Budget">
+                                    days
+                                </div>
+                            </ion-row>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+                <div style="height: 2px;width: 100%;background-color:#ECEFF4"></div>
+                <ion-item style="padding-left: 0px;">
+                    <ion-row>
+                        <ion-col col-4 class="trail-detail-column">
+                            Comments:
+                        </ion-col>
+                        <ion-col col-8>
+                            <ion-row>
+                                <input type="radio" id="Requestcomments" name="Comments"
+                                       [(ngModel)]="mainTrail.comments" value="1">
+                                <label class="radio-txt" for="Requestcomments" text-wrap>Request comments</label>
+                            </ion-row>
+                            <ion-row style="margin-top: 10px">
+                                <input type="radio" id="Turnoffcomments" name="Comments"
+                                       [(ngModel)]="mainTrail.comments" value="0">
+                                <label class="radio-txt" for="Turnoffcomments" text-wrap>Turn off comments</label>
+                            </ion-row>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+                <div style="height: 1.5px;width: 100%;background-color:#ECEFF4"></div>
+                <ion-item style="padding-left: 0px;">
+                    <ion-row>
+                        <ion-col col-4 class="trail-detail-column">
+                            Copy it:
+                        </ion-col>
+                        <ion-col col-8>
+                            <ion-row>
+                                <input type="radio" id="Allow" name="copyTrail" [(ngModel)]="mainTrail.copyTrail"
+                                       value="1">
+                                <label class="radio-txt" for="Allow" text-wrap>Allow user to copy</label>
+                            </ion-row>
+                            <ion-row style="margin-top: 10px">
+                                <input type="radio" id="dontAllow" name="copyTrail" [(ngModel)]="mainTrail.copyTrail"
+                                       value="0">
+                                <label class="radio-txt" for="dontAllow" text-wrap>Don't allow user to copy</label>
+                            </ion-row>
+                        </ion-col>
+                    </ion-row>
+                </ion-item>
+                <div style="height: 1.5px;width: 100%;background-color:#ECEFF4"></div>
+            </ion-list>
+
+          <!--  <ion-row style="margin-top: 15px;">
+                <ion-col col-2 style="padding: 0;">
+                    <div style="font-size: 12px;margin-top: 10px">Import</div>
+                </ion-col>
+                <ion-col col-10 style="padding: 0;">
+                    &lt;!&ndash;<div class="trail-detail-import-item">
+                        <ion-item>
+                            <img style="width: 20px;" src="assets/images/traildetail/facebook.png" item-left>
+                            <div style="margin-left: 5px" text-wrap (click)="Callfbapi()">Import from Facebook</div>
+                        </ion-item>
+                    </div>
+                    <div style="margin-top: 5px" class="trail-detail-import-item">
+                        <ion-item>
+                            <img style="width: 20px;" src="assets/images/traildetail/insta.png" item-left>
+                            <div style="margin-left: 5px" text-wrap (click)="Callinstaapi()">Import from Instagram</div>
+                        </ion-item>
+                    </div>&ndash;&gt;
+
+                    <div class="trail-detail-import-gallery">
+                        <ion-item>
+                            <div style="margin-left: 5px" text-wrap (click)="importFromGallery()">Import from Gallery
+                            </div>
+                        </ion-item>
+                    </div>
+
+                </ion-col>
+            </ion-row>-->
+
+            <div >
+                <ion-item style="font-size: 14px">
+                    <div item-left>Import:</div>
+                    <button style="margin-left: 10px;" ion-button (click)="importFromGallery()">Import from Gallery
+                    </button>
+                </ion-item>
+            </div>
+
+
+
+            <ion-slides #mySlides spaceBetween="7px" [slidesPerView]="2" style="background-color:#ecf0f1;margin-top: 7%;padding: 5px;"
+                        (ionSlideDidChange)="slideChangedForGallery()"
+                        *ngIf="imagesFromGallery.length > 0">
+
+
+                 <ion-slide *ngFor="let image of imagesFromGallery;let i = index">
+                    <div>
+                        <img src="assets/images/crossImage.png" class="cross_icon" (click)="removeItemOnClick(image,i)">
+                        <div>
+                            <img src="{{image}}" class="sel">
+                        </div>
+                    </div>
+                </ion-slide>
+
+
+                <!--  <ion-slide class="trail-slide" *ngFor="let data of dataFromFB;let i = index">
+
+                      &lt;!&ndash;
+                                <div [ngStyle]="{'background-image': 'url(' + data + ')'}" style="background-repeat: no-repeat"></div>
+                      &ndash;&gt;
+                      <div (click)="sliderItemClick(data,i)">
+
+                          <img src="{{data.url}}" *ngIf="data.isChecked" class="sel">
+                          <img src="{{data.url}}" *ngIf="!data.isChecked" class="unsel">
+
+
+                      </div>
+
+
+                      &lt;!&ndash; <img class="trail-detail-images" src="assets/images/newsfeed/img1.png">&ndash;&gt;
+
+                  </ion-slide>-->
+
+
+                <!-- <ion-slide class="trail-slide">
+                   <img class="trail-detail-images" src="assets/images/newsfeed/img1.png">
+                 </ion-slide>
+                 <ion-slide class="trail-slide">
+                   <img class="trail-detail-images" src="assets/images/newsfeed/img1.png">
+                 </ion-slide>
+                 <ion-slide class="trail-slide">
+                   <img class="trail-detail-images" src="assets/images/newsfeed/img1.png">
+                 </ion-slide>-->
+
+
+            </ion-slides>
+
+
+            <ion-item style="font-size: 14px">
+                <div item-left>Set Criteria:</div>
+                <button style="margin-left: 10px;" ion-button (click)="presentSetCriteriaModal()">SET CRITERIA</button>
+            </ion-item>
+            <div style="margin-top:15px;height: 1.5px;width: 100%;background-color:#ECEFF4"></div>
+            <ion-row style="margin-top: 25px">
+
+                <!--  col-3-->
+                <ion-col col-6 style="padding: 0px">
+                    <button style="background-color: #2e84e8;" class="trail-detail-btn" ion-button (click)="save()">
+                        Save
+                    </button>
+                </ion-col>
+                <ion-col col-6 style="padding: 0px">
+                    <button style="background-color: #2ecc71;" class="trail-detail-btn" ion-button (click)="submit()">
+                        Submit
+                    </button>
+                </ion-col>
+
+
+                <!-- <ion-col col-6 style="padding: 0px;">
+                   <button style="background-color: #507cc0;float: left;margin-left: 5px;" class="trail-detail-fbbutton"
+                           ion-button icon-left>
+                     <img style="width: 10%;margin-right: 5px;margin-left: 15px;height: 50%"
+                          src="assets/images/createtrail/facebook_icon.png" align="center">
+                     <div style="margin-right: 5px;margin-top: 3px;" (click)="shareOnFacebook()" >Share to Facebook</div>
+                   </button>
+                 </ion-col>-->
+
+            </ion-row>
+
+        </ion-card-content>
+    </ion-card>
+</ion-content>
+
